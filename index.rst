@@ -22,19 +22,19 @@ Outline:
 
 ----
 
-Why use Python for MEG?
------------------------------------
-
-- Python is free (as in speech)
-- It "combines remarkable power with very clear syntax" [1]_
-- Well suited for high performance numerical computing (NumPy, SciPy, ...)
-- High quality 2D and 3D visualizations (pylab, mlab, ...)
-- Increasingly popular in neuroscience (nipy, nipype, nitime, ...)
-
-
-.. [1] `<http://docs.python.org/faq/general.html#what-is-python/>`_
-
-----
+.. Why use Python for MEG?
+.. -----------------------------------
+.. 
+.. - Python is free (as in speech)
+.. - It "combines remarkable power with very clear syntax" [1]_
+.. - Well suited for high performance numerical computing (NumPy, SciPy, ...)
+.. - High quality 2D and 3D visualizations (pylab, mlab, ...)
+.. - Increasingly popular in neuroscience (nipy, nipype, nitime, ...)
+.. 
+.. 
+.. .. [1] `<http://docs.python.org/faq/general.html#what-is-python/>`_
+.. 
+.. ----
 
 MNE-Python Design Principles
 ----------------------------
@@ -78,7 +78,7 @@ Inverse Solution
 ~~~~~~~~~~~~~~~~
 
 - Compute MNE/dSPM/sLORETA inverse operator
-- Compute MNE/dSPM/sLORETA inverse solution for evoked and raw data
+- Compute inverse solution for evoked, epochs and raw data
 - Morph source space data between subjects (using FreeSurfer registration)
 - Save source space data as .stc or .w file
 
@@ -232,4 +232,5 @@ Future Plans
 - Noise covariance computation with automatic regularization
 - Coherence computation in sensor and source space (multi-taper method from nitime)
 - Network- and connectivity analysis
+- **What ever you want to contribute**
 
