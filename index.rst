@@ -352,7 +352,7 @@ Power and Phase Lock in Src. Space
                                 baseline_mode='percent', n_cycles=2, n_jobs=1)
 
 .. image:: images/phase_lock.png
-   :scale: 60%
+   :scale: 55%
 
 ----
 
