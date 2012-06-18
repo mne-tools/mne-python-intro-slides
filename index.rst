@@ -120,21 +120,21 @@ Reading and Plotting Raw Data
 
 .. sourcecode:: python
 
+    import pylab as pl
     import mne
     raw = mne.fiff.Raw(fname)
 
     picks = mne.fiff.pick_types(raw.info, meg='mag')
-
     some_picks = picks[:5]  # take 5 first
     start, stop = raw.time_to_index(0, 15)  # read the first 15s of data
     data, times = raw[some_picks, start:(stop + 1)]
 
-    pylab.plot(times, data.T)
-    pylab.xlabel('time (s)')
-    pylab.ylabel('MEG data (T)')
+    pl.plot(times, data.T)
+    pl.xlabel('time (s)')
+    pl.ylabel('MEG data (T)')
 
 .. image:: images/raw_data.png
-   :scale: 50%
+   :scale: 45%
 
 ----
 
@@ -170,10 +170,10 @@ Multi-Tapper PSD of Raw Data
     from mne.time_frequency import compute_raw_psd
     raw = mne.fiff.Raw(raw_fname)
 
-    picks = fiff.pick_types(raw.info, meg='grad')  # picks MEG gradiometers
+    picks = mne.fiff.pick_types(raw.info, meg='grad')  # picks MEG gradiometers
 
     tmin, tmax = 0, 60  # use the first 60s of data
-    fmin, fmax = 2, 70  # look at frequencies between 5 and 70Hz
+    fmin, fmax = 0, 300  # look at frequencies between 0 and 300Hz
     NFFT = 2048 # the FFT size (NFFT). Ideally a power of 2
     psds, freqs = compute_raw_psd(raw, tmin=tmin, tmax=tmax, picks=picks,
                                   fmin=fmin, fmax=fmax, NFFT=NFFT, n_jobs=4)
@@ -303,22 +303,18 @@ dSPM Inv. Sol. on Single Epochs
 .. sourcecode:: python
 
     event_id, tmin, tmax = 1, -0.2, 0.5
-    snr = 3.0
+    snr = 1.0
     lambda2 = 1.0 / snr ** 2
     method = 'dSPM'
 
     # Load data
-    inverse_operator = read_inverse_operator(fname_inv)
+    inverse_operator = mne.minimum_norm.read_inverse_operator(fname_inv)
     label = mne.read_label(fname_label)
-    raw = Raw(fname_raw)
+    raw = mne.fiff.Raw(fname_raw)
     events = mne.read_events(fname_event)
 
-    # Set up pick list
-    exclude = raw.info['bads'] + ['EEG 053']  # bads + 1 more
-
     # pick MEG channels
-    picks = pick_types(raw.info, meg=True, eeg=False, stim=False, eog=True,
-                       include=[], exclude=exclude)
+    picks = mne.fiff.pick_types(raw.info, meg=True, eeg=False, stim=False, eog=True)
 
     # Read epochs
     epochs = mne.Epochs(raw, events, event_id, tmin, tmax, picks=picks,
@@ -326,8 +322,8 @@ dSPM Inv. Sol. on Single Epochs
                         reject=dict(mag=4e-12, grad=4000e-13, eog=150e-6))
 
     # Compute inverse solution and stcs for each epoch
-    stcs = apply_inverse_epochs(epochs, inverse_operator, lambda2, method, 
-                                label, pick_normal=True)
+    stcs = mne.minimum_norm.apply_inverse_epochs(epochs, inverse_operator,
+                lambda2, method, label, pick_normal=True)
 
 ----
 
@@ -409,3 +405,19 @@ Future Plans
 - Network- and connectivity analysis
 - **What ever you want to contribute**
 
+----
+
+Some links
+----------
+
+Doc:
+
+- http://martinos.org/mne/ (general doc)
+- http://martinos.org/mne/python_tutorial.html (python tutorial)
+- http://martinos.org/mne/auto_examples/index.html (python examples)
+
+Code:
+
+- https://github.com/mne-tools/mne-python (mne-python code)
+- https://github.com/mne-tools/mne-scripts (mne shell scripts)
+- https://github.com/mne-tools/mne-matlab (mne matlab toolbox)
