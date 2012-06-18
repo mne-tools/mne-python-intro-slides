@@ -115,8 +115,30 @@ What MNE-Python Can't Do
 
 ----
 
-Example: Band-pass Filter Raw File
------------------------------------
+Reading and Plotting Raw Data
+-----------------------------
+
+.. sourcecode:: python
+
+    raw = fiff.Raw(fname)
+
+    picks = fiff.pick_types(raw.info, meg='mag')
+
+    some_picks = picks[:5]  # take 5 first
+    start, stop = raw.time_to_index(0, 15)  # read the first 15s of data
+    data, times = raw[some_picks, start:(stop + 1)]
+
+    pylab.plot(times, data.T)
+    pylab.xlabel('time (s)')
+    pylab.ylabel('MEG data (T)')
+
+.. image:: images/raw_data.png
+   :scale: 50%
+
+----
+
+Band-pass Filter Raw File
+-------------------------
 
 .. sourcecode:: python
 
@@ -139,8 +161,56 @@ Notice:
 
 ----
 
-Example: Evoked Response and Cov.
----------------------------------------
+Multi-Tapper PSD of Raw Data
+----------------------------
+
+.. sourcecode:: python
+
+    raw = fiff.Raw(raw_fname)
+
+    # picks MEG gradiometers
+    picks = fiff.pick_types(raw.info, meg='grad')
+
+    tmin, tmax = 0, 60  # use the first 60s of data
+    fmin, fmax = 2, 70  # look at frequencies between 5 and 70Hz
+    NFFT = 2048 # the FFT size (NFFT). Ideally a power of 2
+    psds, freqs = compute_raw_psd(raw, tmin=tmin, tmax=tmax, picks=picks,
+                                  fmin=fmin, fmax=fmax, NFFT=NFFT, n_jobs=4)
+
+
+.. image:: images/mt_psd.png
+   :scale: 50%
+
+----
+
+Computing Contrasts
+-------------------
+
+.. sourcecode:: python
+
+   import mne
+
+   ...
+
+   epochs1 = mne.Epochs(raw, events, event_id1, tmin, tmax, picks=picks,
+                        baseline=(None, 0), reject=reject)
+   epochs2 = mne.Epochs(raw, events, event_id2, tmin, tmax, picks=picks,
+                        baseline=(None, 0), reject=reject)
+
+   evoked1 = epochs1.average()
+   evoked2 = epochs2.average()
+
+   contrast = evoked1 - evoked2
+
+- Arithmetic operations are supported for Evoked, SourceEstimate, and Covariance
+- The number of averages, degrees of freedom, etc. are used during the calculation
+- An exception is raised if the objects are incompatible
+  (e.g. different SSP projectors in covariances)
+
+----
+
+Evoked Response and Noise Cov.
+------------------------------------
 
 .. sourcecode:: python
 
@@ -169,7 +239,7 @@ Example: Evoked Response and Cov.
 
 ----
 
-Example: Inverse Solution
+dSPM Inverse Solution
 -------------------------
 
 .. sourcecode:: python
@@ -186,7 +256,9 @@ Example: Inverse Solution
     inv = mne.minimum_norm.make_inverse_operator(raw.info, fwd, cov, loose=0.2)
 
     # compute inverse solution
-    lambda2, method = 1 / 3.0 ** 2, 'dSPM'
+    lambda2 = 1 / 3.0 ** 2
+    method = 'dSPM'  # use dSPM method (could also be MNE or sLORETA)
+
     stc = mne.minimum_norm.apply_inverse(evoked, inv, lambda2, method)
 
     # morph it to average brain
@@ -197,29 +269,61 @@ Example: Inverse Solution
 
 ----
 
-Example: Computing Contrasts
---------------------------------------------------
+dSPM Inv. Sol. in Volume Source Space
+-----------------------------------------
 
 .. sourcecode:: python
 
-   import mne
+    snr = 3.0
+    lambda2 = 1.0 / snr ** 2
+    method = 'dSPM'
+    # Load data
+    evoked = Evoked(fname_evoked, setno=0, baseline=(None, 0))
+    inverse_operator = read_inverse_operator(fname_inv)
+    src = inverse_operator['src']
 
-   ...
+    # Compute inverse solution
+    stc = apply_inverse(evoked, inverse_operator, lambda2, method)
+    stc.crop(0.0, 0.2)
 
-   epochs1 = mne.Epochs(raw, events, event_id1, tmin, tmax, picks=picks,
-                        baseline=(None, 0), reject=reject)
-   epochs2 = mne.Epochs(raw, events, event_id2, tmin, tmax, picks=picks,
-                        baseline=(None, 0), reject=reject)
+    # Save result in a 4D nifti file
+    img = mne.save_stc_as_volume('mne_%s_inverse.nii.gz' % method, stc,
+            src, mri_resolution=False)  # set to True for full MRI resolution
 
-   evoked1 = epochs1.average()
-   evoked2 = epochs2.average()
+----
 
-   contrast = evoked1 - evoked2
 
-- Arithmetic operations are supported for Evoked, SourceEstimate, and Covariance
-- The number of averages, degrees of freedom, etc. are used during the calculation
-- An exception is raised if the objects are incompatible
-  (e.g. different SSP projectors in covariances)
+dSPM Inv. Sol. on Single Epochs
+-----------------------------------
+
+.. sourcecode:: python
+
+    event_id, tmin, tmax = 1, -0.2, 0.5
+    snr = 3.0
+    lambda2 = 1.0 / snr ** 2
+    method = 'dSPM'
+
+    # Load data
+    inverse_operator = read_inverse_operator(fname_inv)
+    label = mne.read_label(fname_label)
+    raw = Raw(fname_raw)
+    events = mne.read_events(fname_event)
+
+    # Set up pick list
+    exclude = raw.info['bads'] + ['EEG 053']  # bads + 1 more
+
+    # pick MEG channels
+    picks = pick_types(raw.info, meg=True, eeg=False, stim=False, eog=True,
+                       include=[], exclude=exclude)
+
+    # Read epochs
+    epochs = mne.Epochs(raw, events, event_id, tmin, tmax, picks=picks,
+                        baseline=(None, 0),
+                        reject=dict(mag=4e-12, grad=4000e-13, eog=150e-6))
+
+    # Compute inverse solution and stcs for each epoch
+    stcs = apply_inverse_epochs(epochs, inverse_operator, lambda2, method, 
+                                label, pick_normal=True)
 
 ----
 
