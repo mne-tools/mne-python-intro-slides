@@ -106,7 +106,7 @@ What MNE-Python Can't Do
 
 - Forward modeling (use MNE command line tools)
 - Raw data visualization (use ``mne_browse_raw``)
-- Visualization of source estimates (use ``mne_analyze``) [#f1]_
+- Interactive visualization of source estimates (use ``mne_analyze``) [#f1]_
 
 .. [#f1] Can be done with `PySurfer <http://pysurfer.github.com>`_
 
@@ -135,7 +135,6 @@ Example: Band-pass Filter Raw File
 Notice:
 ~~~~~~~
 - Raw is a class, it provides various functions for filtering etc.
-- ``picks`` is a list with channel indices
 - The filtering is performed in parallel by using ``n_jobs=8``
 
 ----
@@ -149,11 +148,11 @@ Example: Evoked Response and Cov.
 
     fname = 'raw.fif'
     raw = mne.fiff.Raw(fname)
+    raw.info['bads'] = ['MEG 2443', 'EEG 053']  # mark bad channels
 
     # extract epochs
-    exclude = raw.info['bads'] + ['MEG 2443', 'EEG 053']
     picks = mne.fiff.pick_types(raw.info, meg=True, eeg=True, eog=True,
-                                exclude=exclude)
+                                exclude=raw.info['bads'])
     event_id, tmin, tmax = 1, -0.2, 0.5
     events = mne.find_events(raw, stim_channel='STI 014')
     epochs = mne.Epochs(raw, events, event_id, tmin, tmax, proj=True,
