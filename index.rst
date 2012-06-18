@@ -170,10 +170,10 @@ Multi-Tapper PSD of Raw Data
     from mne.time_frequency import compute_raw_psd
     raw = mne.fiff.Raw(raw_fname)
 
-    picks = fiff.pick_types(raw.info, meg='grad')  # picks MEG gradiometers
+    picks = mne.fiff.pick_types(raw.info, meg='grad')  # picks MEG gradiometers
 
     tmin, tmax = 0, 60  # use the first 60s of data
-    fmin, fmax = 2, 70  # look at frequencies between 5 and 70Hz
+    fmin, fmax = 0, 300  # look at frequencies between 0 and 300Hz
     NFFT = 2048 # the FFT size (NFFT). Ideally a power of 2
     psds, freqs = compute_raw_psd(raw, tmin=tmin, tmax=tmax, picks=picks,
                                   fmin=fmin, fmax=fmax, NFFT=NFFT, n_jobs=4)
@@ -314,7 +314,7 @@ dSPM Inv. Sol. on Single Epochs
     events = mne.read_events(fname_event)
 
     # pick MEG channels
-    picks = pick_types(raw.info, meg=True, eeg=False, stim=False, eog=True)
+    picks = mne.fiff.pick_types(raw.info, meg=True, eeg=False, stim=False, eog=True)
 
     # Read epochs
     epochs = mne.Epochs(raw, events, event_id, tmin, tmax, picks=picks,
@@ -322,8 +322,8 @@ dSPM Inv. Sol. on Single Epochs
                         reject=dict(mag=4e-12, grad=4000e-13, eog=150e-6))
 
     # Compute inverse solution and stcs for each epoch
-    stcs = apply_inverse_epochs(epochs, inverse_operator, lambda2, method, 
-                                label, pick_normal=True)
+    stcs = mne.minimum_norm.apply_inverse_epochs(epochs, inverse_operator,
+                lambda2, method, label, pick_normal=True)
 
 ----
 
@@ -376,3 +376,19 @@ Future Plans
 - Network- and connectivity analysis
 - **What ever you want to contribute**
 
+----
+
+Some links
+----------
+
+Doc:
+
+- http://martinos.org/mne/ (general doc)
+- http://martinos.org/mne/python_tutorial.html (python tutorial)
+- http://martinos.org/mne/auto_examples/index.html (python examples)
+
+Code:
+
+- https://github.com/mne-tools/mne-python (mne-python code)
+- https://github.com/mne-tools/mne-scripts (mne shell scripts)
+- https://github.com/mne-tools/mne-matlab (mne matlab toolbox)
