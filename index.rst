@@ -3,10 +3,10 @@
    <img width="800" class="titleimg" src="images/logo_transp_bg.png"/>
    <span class="mytitle">MNE-Python: MNE with Python</span>
    <span class="authors">
-    Alexandre Gramfort, <em>Martin Luessi</em>, Matti S. Hamalainen
+    Alexandre Gramfort, Martin Luessi, Matti S. Hamalainen
    </span>
 
-Cleveland Clinic, April 2, 2012
+Aalto University, June 19, 2012
 
 ----
 
@@ -77,8 +77,8 @@ Preprocessing
 Inverse Solution
 ~~~~~~~~~~~~~~~~
 
-- Compute MNE/dSPM inverse operator
-- Compute MNE/dSPM inverse solution for evoked and raw data
+- Compute MNE/dSPM/sLORETA inverse operator
+- Compute MNE/dSPM/sLORETA inverse solution for evoked and raw data
 - Morph source space data between subjects (using FreeSurfer registration)
 - Save source space data as .stc or .w file
 
@@ -125,11 +125,8 @@ Example: Band-pass Filter Raw File
     fname = 'raw.fif'
     raw = mne.fiff.Raw(fname)
 
-    # select MEG and EEG channels
-    picks = mne.fiff.pick_types(raw.info, meg=True, eeg=True)
-
     # keep beta band
-    raw.band_pass_filter(picks, 13.0, 30.0, filter_length=4096, n_jobs=8)
+    raw.filter(13.0, 30.0, filter_length=4096, n_jobs=8)
 
     # save the result
     raw.save(fname[:-4] + '_beta.fif')
@@ -165,7 +162,7 @@ Example: Evoked Response and Cov.
 
     # compute evoked response and noise covariance
     evoked = epochs.average()
-    cov = mne.compute_covariance(epochs)
+    cov = mne.compute_covariance(epochs, tmax=0)
 
     # save them
     evoked.save('event_%d-evoked.fif' % event_id)
@@ -182,7 +179,7 @@ Example: Inverse Solution
 
     # load data
     evoked = mne.fiff.Evoked('event_1-evoked.fif')
-    cov = mne.Covariance('event_1-cov.fif')
+    cov = mne.read_cov('event_1-cov.fif')
 
     # compute inverse operator
     fwd_fname = 'sample_audvis-meg-eeg-oct-6-fwd.fif'
@@ -190,8 +187,8 @@ Example: Inverse Solution
     inv = mne.minimum_norm.make_inverse_operator(raw.info, fwd, cov, loose=0.2)
 
     # compute inverse solution
-    lambda2, dSPM = 1 / 3.0 ** 2, True
-    stc = mne.minimum_norm.apply_inverse(evoked, inv, lambda2, dSPM)
+    lambda2, method = 1 / 3.0 ** 2, 'dSPM'
+    stc = mne.minimum_norm.apply_inverse(evoked, inv, lambda2, method)
 
     # morph it to average brain
     stc_avg = mne.morph_data('sample', 'fsaverage', stc, 5, smooth=5)
@@ -230,7 +227,6 @@ Example: Computing Contrasts
 Future Plans
 ------------
 
-- sLORETA
 - Beamformers
 - Mixed-norm source estimates
 - Noise covariance computation with automatic regularization
