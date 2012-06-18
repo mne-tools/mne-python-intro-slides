@@ -340,16 +340,14 @@ Power and Phase Lock in Src. Space
     ...  # read raw etc.
 
     epochs = mne.Epochs(raw, events, event_id, tmin, tmax, picks=picks,
-                        baseline=(None, 0),
-                        reject=dict(grad=4000e-13, eog=150e-6),
-                        preload=True)
+                baseline=(None, 0), reject=dict(grad=4000e-13, eog=150e-6),
+                preload=True)
 
     # Compute a source estimate per frequency band
     freqs = np.arange(7, 30, 2)  # define frequencies of interest
     label = mne.read_label(fname_label)
     power, phase_lock = source_induced_power(epochs, inverse_operator, freqs,
-                                label, baseline=(-0.1, 0),
-                                baseline_mode='percent', n_cycles=2, n_jobs=1)
+                label, baseline=(-0.1, 0), baseline_mode='percent', n_cycles=2)
 
 .. image:: images/phase_lock.png
    :scale: 55%
