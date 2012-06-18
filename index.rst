@@ -54,8 +54,8 @@ MNE-Python Status
 
 - Current version: 0.3 (released March 23, 2012)
 - Main contributors: Alexandre Gramfort and Martin Luessi (hopefully more in the future)
-- 7200 lines of code, 4080 lines of comments
-- 55 unit tests, 76% test coverage
+- 7870 lines of code, 4530 lines of comments
+- 62 unit tests, 81% test coverage
 - 33 examples
 
 ----
