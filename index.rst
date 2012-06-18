@@ -331,6 +331,35 @@ dSPM Inv. Sol. on Single Epochs
 
 ----
 
+Power and Phase Lock in Src. Space
+------------------------------------
+
+.. sourcecode:: python
+
+    import mne
+    from mne.minimum_norm import read_inverse_operator, source_induced_power
+
+    tmin, tmax, event_id = -0.2, 0.5, 1
+
+    ...  # read raw etc.
+
+    epochs = mne.Epochs(raw, events, event_id, tmin, tmax, picks=picks,
+                        baseline=(None, 0),
+                        reject=dict(grad=4000e-13, eog=150e-6),
+                        preload=True)
+
+    # Compute a source estimate per frequency band
+    freqs = np.arange(7, 30, 2)  # define frequencies of interest
+    label = mne.read_label(fname_label)
+    power, phase_lock = source_induced_power(epochs, inverse_operator, freqs,
+                                label, baseline=(-0.1, 0),
+                                baseline_mode='percent', n_cycles=2, n_jobs=1)
+
+.. image:: images/phase_lock.png
+   :scale: 60%
+
+----
+
 Computing SSPs for ECG and EOG
 --------------------------------------------------
 
