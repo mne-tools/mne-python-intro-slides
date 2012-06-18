@@ -24,16 +24,16 @@ Outline:
 
 .. Why use Python for MEG?
 .. -----------------------------------
-.. 
+..
 .. - Python is free (as in speech)
 .. - It "combines remarkable power with very clear syntax" [1]_
 .. - Well suited for high performance numerical computing (NumPy, SciPy, ...)
 .. - High quality 2D and 3D visualizations (pylab, mlab, ...)
 .. - Increasingly popular in neuroscience (nipy, nipype, nitime, ...)
-.. 
-.. 
+..
+..
 .. .. [1] `<http://docs.python.org/faq/general.html#what-is-python/>`_
-.. 
+..
 .. ----
 
 MNE-Python Design Principles
@@ -325,6 +325,45 @@ dSPM Inv. Sol. on Single Epochs
     # Compute inverse solution and stcs for each epoch
     stcs = apply_inverse_epochs(epochs, inverse_operator, lambda2, method, 
                                 label, pick_normal=True)
+
+----
+
+Computing SSPs for ECG and EOG
+--------------------------------------------------
+
+First compute ECG projections with:
+
+.. sourcecode:: bash
+
+   $mne_compute_proj_ecg.py -i protocol_run1_raw.fif --l-freq 1 --h-freq 100 \
+   --rej-grad 3000 --rej-mag 4000 --rej-eeg 100 --average -c "ECG063" \
+   --ecg-h-freq 25 --tstart 5
+
+Detects heartbeats using the channel ECG063 & computes the projections on data filtered between 1 and 100Hz & saves 2 files:
+The events in (you should look at them in mne_browse_raw)
+
+*protocol_run1_raw_ecg-eve.fif*
+
+and the file containing the projections (look at their effect with mne_browse_raw)
+
+*protocol_run1_raw_ecg_avg_proj.fif*
+
+For general help on the command:
+
+.. sourcecode:: bash
+
+    $mne_compute_proj_ecg.py -h
+
+For EOG now:
+
+.. sourcecode:: bash
+
+    $mne_compute_proj_eog.py -i protocol_run1_raw.fif --l-freq 1 --h-freq 35 \
+    --rej-grad 3000 --rej-mag 4000 --rej-eeg 100 \
+    --proj protocol_run1_raw_ecg_avg_proj.fif –average
+
+This will save *protocol_run1_raw_eog-eve.fif* containing the events and
+*protocol_run1_raw_eog_avg_proj.fif* containing the SSP projections.
 
 ----
 
