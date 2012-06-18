@@ -120,21 +120,21 @@ Reading and Plotting Raw Data
 
 .. sourcecode:: python
 
+    import pylab as pl
     import mne
     raw = mne.fiff.Raw(fname)
 
     picks = mne.fiff.pick_types(raw.info, meg='mag')
-
     some_picks = picks[:5]  # take 5 first
     start, stop = raw.time_to_index(0, 15)  # read the first 15s of data
     data, times = raw[some_picks, start:(stop + 1)]
 
-    pylab.plot(times, data.T)
-    pylab.xlabel('time (s)')
-    pylab.ylabel('MEG data (T)')
+    pl.plot(times, data.T)
+    pl.xlabel('time (s)')
+    pl.ylabel('MEG data (T)')
 
 .. image:: images/raw_data.png
-   :scale: 50%
+   :scale: 45%
 
 ----
 
@@ -303,22 +303,18 @@ dSPM Inv. Sol. on Single Epochs
 .. sourcecode:: python
 
     event_id, tmin, tmax = 1, -0.2, 0.5
-    snr = 3.0
+    snr = 1.0
     lambda2 = 1.0 / snr ** 2
     method = 'dSPM'
 
     # Load data
-    inverse_operator = read_inverse_operator(fname_inv)
+    inverse_operator = mne.minimum_norm.read_inverse_operator(fname_inv)
     label = mne.read_label(fname_label)
-    raw = Raw(fname_raw)
+    raw = mne.fiff.Raw(fname_raw)
     events = mne.read_events(fname_event)
 
-    # Set up pick list
-    exclude = raw.info['bads'] + ['EEG 053']  # bads + 1 more
-
     # pick MEG channels
-    picks = pick_types(raw.info, meg=True, eeg=False, stim=False, eog=True,
-                       include=[], exclude=exclude)
+    picks = pick_types(raw.info, meg=True, eeg=False, stim=False, eog=True)
 
     # Read epochs
     epochs = mne.Epochs(raw, events, event_id, tmin, tmax, picks=picks,
