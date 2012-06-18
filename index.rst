@@ -120,9 +120,10 @@ Reading and Plotting Raw Data
 
 .. sourcecode:: python
 
-    raw = fiff.Raw(fname)
+    import mne
+    raw = mne.fiff.Raw(fname)
 
-    picks = fiff.pick_types(raw.info, meg='mag')
+    picks = mne.fiff.pick_types(raw.info, meg='mag')
 
     some_picks = picks[:5]  # take 5 first
     start, stop = raw.time_to_index(0, 15)  # read the first 15s of data
@@ -166,10 +167,10 @@ Multi-Tapper PSD of Raw Data
 
 .. sourcecode:: python
 
-    raw = fiff.Raw(raw_fname)
+    from mne.time_frequency import compute_raw_psd
+    raw = mne.fiff.Raw(raw_fname)
 
-    # picks MEG gradiometers
-    picks = fiff.pick_types(raw.info, meg='grad')
+    picks = fiff.pick_types(raw.info, meg='grad')  # picks MEG gradiometers
 
     tmin, tmax = 0, 60  # use the first 60s of data
     fmin, fmax = 2, 70  # look at frequencies between 5 and 70Hz
@@ -274,9 +275,12 @@ dSPM Inv. Sol. in Volume Source Space
 
 .. sourcecode:: python
 
+    from mne.minimum_norm import apply_inverse, read_inverse_operator
+    
     snr = 3.0
     lambda2 = 1.0 / snr ** 2
     method = 'dSPM'
+    
     # Load data
     evoked = Evoked(fname_evoked, setno=0, baseline=(None, 0))
     inverse_operator = read_inverse_operator(fname_inv)
