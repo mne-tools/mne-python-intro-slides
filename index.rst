@@ -282,15 +282,15 @@ dSPM Inv. Sol. in Volume Source Space
     method = 'dSPM'
     
     # Load data
-    evoked = Evoked(fname_evoked, setno=0, baseline=(None, 0))
+    evoked = mne.fiff.Evoked(fname_evoked, setno=0, baseline=(None, 0))
     inverse_operator = read_inverse_operator(fname_inv)
-    src = inverse_operator['src']
 
     # Compute inverse solution
     stc = apply_inverse(evoked, inverse_operator, lambda2, method)
     stc.crop(0.0, 0.2)
 
     # Save result in a 4D nifti file
+    src = inverse_operator['src']
     img = mne.save_stc_as_volume('mne_%s_inverse.nii.gz' % method, stc,
             src, mri_resolution=False)  # set to True for full MRI resolution
 
