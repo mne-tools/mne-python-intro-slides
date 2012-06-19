@@ -339,6 +339,9 @@ dSPM Inv. Sol. on Single Epochs
 
 .. sourcecode:: python
 
+    import mne
+    from mne.minimum_norm import apply_inverse_epochs
+
     event_id, tmin, tmax = 1, -0.2, 0.5
     snr = 1.0
     lambda2 = 1.0 / snr ** 2
@@ -359,8 +362,8 @@ dSPM Inv. Sol. on Single Epochs
                         reject=dict(mag=4e-12, grad=4000e-13, eog=150e-6))
 
     # Compute inverse solution and stcs for each epoch
-    stcs = mne.minimum_norm.apply_inverse_epochs(epochs, inverse_operator,
-                lambda2, method, label, pick_normal=True)
+    stcs = apply_inverse_epochs(epochs, inverse_operator,
+                                lambda2, method, label, pick_normal=True)
 
 ----
 

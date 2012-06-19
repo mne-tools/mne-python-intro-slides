@@ -1972,7 +1972,10 @@ div.slide div.presenter_notes {
             <header><h1>dSPM Inv. Sol. on Single Epochs</h1></header>
             
             
-            <section><pre><span class="n">event_id</span><span class="p">,</span> <span class="n">tmin</span><span class="p">,</span> <span class="n">tmax</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.5</span>
+            <section><pre><span class="kn">import</span> <span class="nn">mne</span>
+<span class="kn">from</span> <span class="nn">mne.minimum_norm</span> <span class="kn">import</span> <span class="n">apply_inverse_epochs</span>
+
+<span class="n">event_id</span><span class="p">,</span> <span class="n">tmin</span><span class="p">,</span> <span class="n">tmax</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.5</span>
 <span class="n">snr</span> <span class="o">=</span> <span class="mf">1.0</span>
 <span class="n">lambda2</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">snr</span> <span class="o">**</span> <span class="mi">2</span>
 <span class="n">method</span> <span class="o">=</span> <span class="s">&#39;dSPM&#39;</span>
@@ -1992,8 +1995,8 @@ div.slide div.presenter_notes {
                     <span class="n">reject</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">mag</span><span class="o">=</span><span class="mf">4e-12</span><span class="p">,</span> <span class="n">grad</span><span class="o">=</span><span class="mf">4000e-13</span><span class="p">,</span> <span class="n">eog</span><span class="o">=</span><span class="mf">150e-6</span><span class="p">))</span>
 
 <span class="c"># Compute inverse solution and stcs for each epoch</span>
-<span class="n">stcs</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">minimum_norm</span><span class="o">.</span><span class="n">apply_inverse_epochs</span><span class="p">(</span><span class="n">epochs</span><span class="p">,</span> <span class="n">inverse_operator</span><span class="p">,</span>
-            <span class="n">lambda2</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">pick_normal</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">stcs</span> <span class="o">=</span> <span class="n">apply_inverse_epochs</span><span class="p">(</span><span class="n">epochs</span><span class="p">,</span> <span class="n">inverse_operator</span><span class="p">,</span>
+                            <span class="n">lambda2</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">pick_normal</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 </pre></section>
             
           </div>
