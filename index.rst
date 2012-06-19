@@ -15,7 +15,6 @@ Link to these slides: http://mne-tools.github.com/mne-python-intro-slides
 Outline:
 --------
 
-- Why use Python for MEG?
 - Design Principles
 - Status
 - Feature overview
