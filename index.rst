@@ -354,10 +354,8 @@ dSPM Inv. Sol. on Single Epochs
     raw = mne.fiff.Raw(fname_raw)
     events = mne.read_events(fname_event)
 
-    # pick MEG channels
     picks = mne.fiff.pick_types(raw.info, meg=True, eeg=False, stim=False, eog=True)
 
-    # Read epochs
     epochs = mne.Epochs(raw, events, event_id, tmin, tmax, picks=picks,
                         baseline=(None, 0),
                         reject=dict(mag=4e-12, grad=4000e-13, eog=150e-6))
