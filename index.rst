@@ -8,6 +8,8 @@
 
 Aalto University, June 19, 2012
 
+Link to these slides: http://mne-tools.github.com/mne-python-intro-slides
+
 ----
 
 Outline:
