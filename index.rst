@@ -240,6 +240,24 @@ Evoked Response and Noise Cov.
 
 ----
 
+Plot Evoked Response
+------------------------
+
+.. sourcecode:: python
+
+   import mne
+   from mne.viz import plot_evoked
+
+   evoked = mne.fiff.Evoked('event_1-evoked.fif')
+
+   plot_evoked(evoked)
+
+
+.. image:: images/plot_evoked.png
+      :scale: 70%
+
+----
+
 dSPM Inverse Solution
 -------------------------
 
