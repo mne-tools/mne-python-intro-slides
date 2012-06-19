@@ -258,6 +258,25 @@ Plot Evoked Response
 
 ----
 
+Visualizing the Noise Covariance
+------------------------------------
+
+.. sourcecode:: python
+
+    import mne
+
+    ...
+
+    cov = mne.read_cov('event_1-cov.fif')
+    # Show covariance
+    mne.viz.plot_cov(cov, raw.info, exclude=raw.info['bads'], colorbar=True,
+                     proj=True)  # try setting proj to False to see the effect
+
+.. image:: images/plot_cov.png
+    :scale: 100%
+
+----
+
 dSPM Inverse Solution
 -------------------------
 
