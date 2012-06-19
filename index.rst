@@ -80,7 +80,7 @@ Inverse Solution
 - Compute MNE/dSPM/sLORETA inverse operator
 - Compute inverse solution for evoked, epochs and raw data
 - Morph source space data between subjects (using FreeSurfer registration)
-- Save source space data as .stc or .w file
+- Save source space data as .stc, .w, or .nii.gz (4D NIfTI) file
 
 ----
 
