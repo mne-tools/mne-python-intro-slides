@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2010 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+  Original slides: Marcin Wichary (mwichary@google.com)
+  Modifications: Ernest Delgado (ernestd@google.com)
+                 Alex Russell (slightlyoff@chromium.org)
+
+  landslide modifications: Adam Zapletal (adamzap@gmail.com)
+                           Nicolas Perriault (nperriault@gmail.com)
+-->
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>None</title>
+    <!-- Styles -->
+    
+    <link rel="stylesheet" media="print" href="/Users/alex/local/lib/python2.7/site-packages/landslide/themes/default/css/print.css">
+    <link rel="stylesheet" media="screen, projection" href="./themes/mytheme/css/screen.css">
+    
+    
+    <!-- /Styles -->
+    <!-- Javascripts -->
+    
+    <script type="text/javascript" src="/Users/alex/local/lib/python2.7/site-packages/landslide/themes/default/js/slides.js"></script>
+    
+    
+    <!-- /Javascripts -->
+</head>
+<body>
+  <div id="blank"></div>
+  <div class="presentation">
+    <div id="current_presenter_notes">
+      <div id="presenter_note"></div>
+    </div>
+    <div class="slides">
+      
+      <!-- slide source: index.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            
+            <section><img width="800" class="titleimg" src="images/logo_transp_bg.png"/>
+<span class="mytitle">MNE-Python: MNE with Python</span>
+<span class="authors">
+ Alexandre Gramfort, Martin Luessi, Matti S. Hamalainen
+</span><p>Aalto University, June 19, 2012</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="index.rst">index.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              1/19
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: index.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Outline:</h1></header>
+            
+            
+            <section><ul class="simple">
+<li>Why use Python for MEG?</li>
+<li>Design Principles</li>
+<li>Status</li>
+<li>Feature overview</li>
+<li>Example Usage</li>
+<li>Future Plans</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="index.rst">index.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              2/19
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: index.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>MNE-Python Design Principles</h1></header>
+            
+            
+            <section><ul class="simple">
+<li>Provide a powerful but easy-to-use scripting interface (no GUI)</li>
+<li>Extend functionality of the MNE command line tools</li>
+<li>Implement all features of the MNE Matlab toolbox</li>
+<li>Simplicity, clean code, and good documentation</li>
+<li>Permissive BSD license (allows use in commercial products)</li>
+<li>Open development <a class="reference external" href="http://github.com/mne-tools/mne-python">http://github.com/mne-tools/mne-python</a></li>
+<li>Do not depend on any commercial software</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="index.rst">index.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              3/19
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: index.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>MNE-Python Status</h1></header>
+            
+            
+            <section><ul class="simple">
+<li>Current version: 0.3 (released March 23, 2012)</li>
+<li>Main contributors: Alexandre Gramfort and Martin Luessi (hopefully more in the future)</li>
+<li>7870 lines of code, 4530 lines of comments</li>
+<li>62 unit tests, 81% test coverage</li>
+<li>33 examples</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="index.rst">index.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              4/19
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: index.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Key Features</h1></header>
+            
+            
+            <section><h2>Preprocessing</h2>
+<ul class="simple">
+<li>Filtering of raw files</li>
+<li>Detect ECG and EOG events (for SSP)</li>
+<li>Compute SSP projectors</li>
+<li>Extract events from raw files</li>
+<li>Compute noise covariance matrix</li>
+<li>Extract epochs and compute evoked responses</li>
+</ul>
+
+
+<h2>Inverse Solution</h2>
+<ul class="simple">
+<li>Compute MNE/dSPM/sLORETA inverse operator</li>
+<li>Compute inverse solution for evoked, epochs and raw data</li>
+<li>Morph source space data between subjects (using FreeSurfer registration)</li>
+<li>Save source space data as .stc or .w file</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="index.rst">index.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              5/19
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: index.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Key Features Cont.</h1></header>
+            
+            
+            <section><h2>Time-Frequency Analysis</h2>
+<ul class="simple">
+<li>Compute multi-taper PSD of raw data</li>
+<li>Compute induced power and phase lock in sensor and source space</li>
+</ul>
+
+
+<h2>Statistics</h2>
+<ul class="simple">
+<li>Permutation F and T tests</li>
+<li>Non-parametric cluster statistics</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="index.rst">index.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              6/19
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: index.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>What MNE-Python Can't Do</h1></header>
+            
+            
+            <section><ul class="simple">
+<li>Forward modeling (use MNE command line tools)</li>
+<li>Raw data visualization (use <tt class="docutils literal">mne_browse_raw</tt>)</li>
+<li>Interactive visualization of source estimates (use <tt class="docutils literal">mne_analyze</tt>) <a class="footnote-reference" href="#f1" id="id1">[1]</a></li>
+</ul>
+<table class="docutils footnote" frame="void" id="f1" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>Can be done with <a class="reference external" href="http://pysurfer.github.com">PySurfer</a></td></tr>
+</tbody>
+</table>
+<img alt="images/pysurfer.png" src="images/pysurfer.png" style="width: 320.0px; height: 310.0px;" /></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="index.rst">index.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              7/19
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: index.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Reading and Plotting Raw Data</h1></header>
+            
+            
+            <section><pre><span class="kn">import</span> <span class="nn">pylab</span> <span class="kn">as</span> <span class="nn">pl</span>
+<span class="kn">import</span> <span class="nn">mne</span>
+<span class="n">raw</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">fiff</span><span class="o">.</span><span class="n">Raw</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+
+<span class="n">picks</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">fiff</span><span class="o">.</span><span class="n">pick_types</span><span class="p">(</span><span class="n">raw</span><span class="o">.</span><span class="n">info</span><span class="p">,</span> <span class="n">meg</span><span class="o">=</span><span class="s">&#39;mag&#39;</span><span class="p">)</span>
+<span class="n">some_picks</span> <span class="o">=</span> <span class="n">picks</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>  <span class="c"># take 5 first</span>
+<span class="n">start</span><span class="p">,</span> <span class="n">stop</span> <span class="o">=</span> <span class="n">raw</span><span class="o">.</span><span class="n">time_to_index</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>  <span class="c"># read the first 15s of data</span>
+<span class="n">data</span><span class="p">,</span> <span class="n">times</span> <span class="o">=</span> <span class="n">raw</span><span class="p">[</span><span class="n">some_picks</span><span class="p">,</span> <span class="n">start</span><span class="p">:(</span><span class="n">stop</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>
+
+<span class="n">pl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+<span class="n">pl</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">&#39;time (s)&#39;</span><span class="p">)</span>
+<span class="n">pl</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">&#39;MEG data (T)&#39;</span><span class="p">)</span>
+</pre>
+<img alt="images/raw_data.png" src="images/raw_data.png" style="width: 332.55px; height: 256.95px;" /></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="index.rst">index.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              8/19
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: index.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Band-pass Filter Raw File</h1></header>
+            
+            
+            <section><pre><span class="kn">import</span> <span class="nn">mne</span>
+
+<span class="n">fname</span> <span class="o">=</span> <span class="s">&#39;raw.fif&#39;</span>
+<span class="n">raw</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">fiff</span><span class="o">.</span><span class="n">Raw</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+
+<span class="c"># keep beta band</span>
+<span class="n">raw</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="mf">13.0</span><span class="p">,</span> <span class="mf">30.0</span><span class="p">,</span> <span class="n">filter_length</span><span class="o">=</span><span class="mi">4096</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+
+<span class="c"># save the result</span>
+<span class="n">raw</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">fname</span><span class="p">[:</span><span class="o">-</span><span class="mi">4</span><span class="p">]</span> <span class="o">+</span> <span class="s">&#39;_beta.fif&#39;</span><span class="p">)</span>
+</pre>
+
+<h2>Notice:</h2>
+<ul class="simple">
+<li>Raw is a class, it provides various functions for filtering etc.</li>
+<li>The filtering is performed in parallel by using <tt class="docutils literal">n_jobs=8</tt></li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="index.rst">index.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              9/19
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: index.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Multi-Tapper PSD of Raw Data</h1></header>
+            
+            
+            <section><pre><span class="kn">from</span> <span class="nn">mne.time_frequency</span> <span class="kn">import</span> <span class="n">compute_raw_psd</span>
+<span class="n">raw</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">fiff</span><span class="o">.</span><span class="n">Raw</span><span class="p">(</span><span class="n">raw_fname</span><span class="p">)</span>
+
+<span class="n">picks</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">fiff</span><span class="o">.</span><span class="n">pick_types</span><span class="p">(</span><span class="n">raw</span><span class="o">.</span><span class="n">info</span><span class="p">,</span> <span class="n">meg</span><span class="o">=</span><span class="s">&#39;grad&#39;</span><span class="p">)</span>  <span class="c"># picks MEG gradiometers</span>
+
+<span class="n">tmin</span><span class="p">,</span> <span class="n">tmax</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">60</span>  <span class="c"># use the first 60s of data</span>
+<span class="n">fmin</span><span class="p">,</span> <span class="n">fmax</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">300</span>  <span class="c"># look at frequencies between 0 and 300Hz</span>
+<span class="n">NFFT</span> <span class="o">=</span> <span class="mi">2048</span> <span class="c"># the FFT size (NFFT). Ideally a power of 2</span>
+<span class="n">psds</span><span class="p">,</span> <span class="n">freqs</span> <span class="o">=</span> <span class="n">compute_raw_psd</span><span class="p">(</span><span class="n">raw</span><span class="p">,</span> <span class="n">tmin</span><span class="o">=</span><span class="n">tmin</span><span class="p">,</span> <span class="n">tmax</span><span class="o">=</span><span class="n">tmax</span><span class="p">,</span> <span class="n">picks</span><span class="o">=</span><span class="n">picks</span><span class="p">,</span>
+                              <span class="n">fmin</span><span class="o">=</span><span class="n">fmin</span><span class="p">,</span> <span class="n">fmax</span><span class="o">=</span><span class="n">fmax</span><span class="p">,</span> <span class="n">NFFT</span><span class="o">=</span><span class="n">NFFT</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+</pre>
+<img alt="images/mt_psd.png" src="images/mt_psd.png" style="width: 400.0px; height: 300.0px;" /></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="index.rst">index.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              10/19
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: index.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Computing Contrasts</h1></header>
+            
+            
+            <section><pre><span class="kn">import</span> <span class="nn">mne</span>
+
+<span class="o">...</span>
+
+<span class="n">epochs1</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">Epochs</span><span class="p">(</span><span class="n">raw</span><span class="p">,</span> <span class="n">events</span><span class="p">,</span> <span class="n">event_id1</span><span class="p">,</span> <span class="n">tmin</span><span class="p">,</span> <span class="n">tmax</span><span class="p">,</span> <span class="n">picks</span><span class="o">=</span><span class="n">picks</span><span class="p">,</span>
+                     <span class="n">baseline</span><span class="o">=</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">reject</span><span class="o">=</span><span class="n">reject</span><span class="p">)</span>
+<span class="n">epochs2</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">Epochs</span><span class="p">(</span><span class="n">raw</span><span class="p">,</span> <span class="n">events</span><span class="p">,</span> <span class="n">event_id2</span><span class="p">,</span> <span class="n">tmin</span><span class="p">,</span> <span class="n">tmax</span><span class="p">,</span> <span class="n">picks</span><span class="o">=</span><span class="n">picks</span><span class="p">,</span>
+                     <span class="n">baseline</span><span class="o">=</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">reject</span><span class="o">=</span><span class="n">reject</span><span class="p">)</span>
+
+<span class="n">evoked1</span> <span class="o">=</span> <span class="n">epochs1</span><span class="o">.</span><span class="n">average</span><span class="p">()</span>
+<span class="n">evoked2</span> <span class="o">=</span> <span class="n">epochs2</span><span class="o">.</span><span class="n">average</span><span class="p">()</span>
+
+<span class="n">contrast</span> <span class="o">=</span> <span class="n">evoked1</span> <span class="o">-</span> <span class="n">evoked2</span>
+</pre>
+<ul class="simple">
+<li>Arithmetic operations are supported for Evoked, SourceEstimate, and Covariance</li>
+<li>The number of averages, degrees of freedom, etc. are used during the calculation</li>
+<li>An exception is raised if the objects are incompatible
+(e.g. different SSP projectors in covariances)</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="index.rst">index.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              11/19
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: index.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Evoked Response and Noise Cov.</h1></header>
+            
+            
+            <section><pre><span class="kn">import</span> <span class="nn">mne</span>
+
+<span class="n">fname</span> <span class="o">=</span> <span class="s">&#39;raw.fif&#39;</span>
+<span class="n">raw</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">fiff</span><span class="o">.</span><span class="n">Raw</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+<span class="n">raw</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s">&#39;bads&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;MEG 2443&#39;</span><span class="p">,</span> <span class="s">&#39;EEG 053&#39;</span><span class="p">]</span>  <span class="c"># mark bad channels</span>
+
+<span class="c"># extract epochs</span>
+<span class="n">picks</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">fiff</span><span class="o">.</span><span class="n">pick_types</span><span class="p">(</span><span class="n">raw</span><span class="o">.</span><span class="n">info</span><span class="p">,</span> <span class="n">meg</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">eeg</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">eog</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                            <span class="n">exclude</span><span class="o">=</span><span class="n">raw</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s">&#39;bads&#39;</span><span class="p">])</span>
+<span class="n">event_id</span><span class="p">,</span> <span class="n">tmin</span><span class="p">,</span> <span class="n">tmax</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.5</span>
+<span class="n">events</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">find_events</span><span class="p">(</span><span class="n">raw</span><span class="p">,</span> <span class="n">stim_channel</span><span class="o">=</span><span class="s">&#39;STI 014&#39;</span><span class="p">)</span>
+<span class="n">epochs</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">Epochs</span><span class="p">(</span><span class="n">raw</span><span class="p">,</span> <span class="n">events</span><span class="p">,</span> <span class="n">event_id</span><span class="p">,</span> <span class="n">tmin</span><span class="p">,</span> <span class="n">tmax</span><span class="p">,</span> <span class="n">proj</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                    <span class="n">picks</span><span class="o">=</span><span class="n">picks</span><span class="p">,</span> <span class="n">baseline</span><span class="o">=</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">preload</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                    <span class="n">reject</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">grad</span><span class="o">=</span><span class="mf">4000e-13</span><span class="p">,</span> <span class="n">mag</span><span class="o">=</span><span class="mf">4e-12</span><span class="p">,</span> <span class="n">eog</span><span class="o">=</span><span class="mf">150e-6</span><span class="p">))</span>
+
+<span class="c"># compute evoked response and noise covariance</span>
+<span class="n">evoked</span> <span class="o">=</span> <span class="n">epochs</span><span class="o">.</span><span class="n">average</span><span class="p">()</span>
+<span class="n">cov</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">compute_covariance</span><span class="p">(</span><span class="n">epochs</span><span class="p">,</span> <span class="n">tmax</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c"># save them</span>
+<span class="n">evoked</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s">&#39;event_</span><span class="si">%d</span><span class="s">-evoked.fif&#39;</span> <span class="o">%</span> <span class="n">event_id</span><span class="p">)</span>
+<span class="n">cov</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s">&#39;event_</span><span class="si">%d</span><span class="s">-cov.fif&#39;</span> <span class="o">%</span> <span class="n">event_id</span><span class="p">)</span>
+</pre></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="index.rst">index.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              12/19
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: index.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>dSPM Inverse Solution</h1></header>
+            
+            
+            <section><pre><span class="kn">import</span> <span class="nn">mne</span>
+
+<span class="c"># load data</span>
+<span class="n">evoked</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">fiff</span><span class="o">.</span><span class="n">Evoked</span><span class="p">(</span><span class="s">&#39;event_1-evoked.fif&#39;</span><span class="p">)</span>
+<span class="n">cov</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">read_cov</span><span class="p">(</span><span class="s">&#39;event_1-cov.fif&#39;</span><span class="p">)</span>
+
+<span class="c"># compute inverse operator</span>
+<span class="n">fwd_fname</span> <span class="o">=</span> <span class="s">&#39;sample_audvis-meg-eeg-oct-6-fwd.fif&#39;</span>
+<span class="n">fwd</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">read_forward_solution</span><span class="p">(</span><span class="n">fwd_fname</span><span class="p">,</span> <span class="n">surf_ori</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">inv</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">minimum_norm</span><span class="o">.</span><span class="n">make_inverse_operator</span><span class="p">(</span><span class="n">raw</span><span class="o">.</span><span class="n">info</span><span class="p">,</span> <span class="n">fwd</span><span class="p">,</span> <span class="n">cov</span><span class="p">,</span> <span class="n">loose</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+
+<span class="c"># compute inverse solution</span>
+<span class="n">lambda2</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="mf">3.0</span> <span class="o">**</span> <span class="mi">2</span>
+<span class="n">method</span> <span class="o">=</span> <span class="s">&#39;dSPM&#39;</span>  <span class="c"># use dSPM method (could also be MNE or sLORETA)</span>
+
+<span class="n">stc</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">minimum_norm</span><span class="o">.</span><span class="n">apply_inverse</span><span class="p">(</span><span class="n">evoked</span><span class="p">,</span> <span class="n">inv</span><span class="p">,</span> <span class="n">lambda2</span><span class="p">,</span> <span class="n">method</span><span class="p">)</span>
+
+<span class="c"># morph it to average brain</span>
+<span class="n">stc_avg</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">morph_data</span><span class="p">(</span><span class="s">&#39;sample&#39;</span><span class="p">,</span> <span class="s">&#39;fsaverage&#39;</span><span class="p">,</span> <span class="n">stc</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">smooth</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+<span class="c"># save it</span>
+<span class="n">stc_avg</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s">&#39;event_1_dspm_fsaverage&#39;</span><span class="p">)</span>
+</pre></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="index.rst">index.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              13/19
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: index.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>dSPM Inv. Sol. in Volume Source Space</h1></header>
+            
+            
+            <section><pre><span class="kn">from</span> <span class="nn">mne.minimum_norm</span> <span class="kn">import</span> <span class="n">apply_inverse</span><span class="p">,</span> <span class="n">read_inverse_operator</span>
+
+<span class="n">snr</span> <span class="o">=</span> <span class="mf">3.0</span>
+<span class="n">lambda2</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">snr</span> <span class="o">**</span> <span class="mi">2</span>
+<span class="n">method</span> <span class="o">=</span> <span class="s">&#39;dSPM&#39;</span>
+
+<span class="c"># Load data</span>
+<span class="n">evoked</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">fiff</span><span class="o">.</span><span class="n">Evoked</span><span class="p">(</span><span class="n">fname_evoked</span><span class="p">,</span> <span class="n">setno</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">baseline</span><span class="o">=</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">inverse_operator</span> <span class="o">=</span> <span class="n">read_inverse_operator</span><span class="p">(</span><span class="n">fname_inv</span><span class="p">)</span>
+
+<span class="c"># Compute inverse solution</span>
+<span class="n">stc</span> <span class="o">=</span> <span class="n">apply_inverse</span><span class="p">(</span><span class="n">evoked</span><span class="p">,</span> <span class="n">inverse_operator</span><span class="p">,</span> <span class="n">lambda2</span><span class="p">,</span> <span class="n">method</span><span class="p">)</span>
+<span class="n">stc</span><span class="o">.</span><span class="n">crop</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">)</span>
+
+<span class="c"># Save result in a 4D nifti file</span>
+<span class="n">src</span> <span class="o">=</span> <span class="n">inverse_operator</span><span class="p">[</span><span class="s">&#39;src&#39;</span><span class="p">]</span>
+<span class="n">img</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">save_stc_as_volume</span><span class="p">(</span><span class="s">&#39;mne_</span><span class="si">%s</span><span class="s">_inverse.nii.gz&#39;</span> <span class="o">%</span> <span class="n">method</span><span class="p">,</span> <span class="n">stc</span><span class="p">,</span>
+        <span class="n">src</span><span class="p">,</span> <span class="n">mri_resolution</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>  <span class="c"># set to True for full MRI resolution</span>
+</pre></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="index.rst">index.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              14/19
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: index.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>dSPM Inv. Sol. on Single Epochs</h1></header>
+            
+            
+            <section><pre><span class="n">event_id</span><span class="p">,</span> <span class="n">tmin</span><span class="p">,</span> <span class="n">tmax</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.5</span>
+<span class="n">snr</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">lambda2</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">snr</span> <span class="o">**</span> <span class="mi">2</span>
+<span class="n">method</span> <span class="o">=</span> <span class="s">&#39;dSPM&#39;</span>
+
+<span class="c"># Load data</span>
+<span class="n">inverse_operator</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">minimum_norm</span><span class="o">.</span><span class="n">read_inverse_operator</span><span class="p">(</span><span class="n">fname_inv</span><span class="p">)</span>
+<span class="n">label</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">read_label</span><span class="p">(</span><span class="n">fname_label</span><span class="p">)</span>
+<span class="n">raw</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">fiff</span><span class="o">.</span><span class="n">Raw</span><span class="p">(</span><span class="n">fname_raw</span><span class="p">)</span>
+<span class="n">events</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">read_events</span><span class="p">(</span><span class="n">fname_event</span><span class="p">)</span>
+
+<span class="c"># pick MEG channels</span>
+<span class="n">picks</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">fiff</span><span class="o">.</span><span class="n">pick_types</span><span class="p">(</span><span class="n">raw</span><span class="o">.</span><span class="n">info</span><span class="p">,</span> <span class="n">meg</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">eeg</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">stim</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">eog</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="c"># Read epochs</span>
+<span class="n">epochs</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">Epochs</span><span class="p">(</span><span class="n">raw</span><span class="p">,</span> <span class="n">events</span><span class="p">,</span> <span class="n">event_id</span><span class="p">,</span> <span class="n">tmin</span><span class="p">,</span> <span class="n">tmax</span><span class="p">,</span> <span class="n">picks</span><span class="o">=</span><span class="n">picks</span><span class="p">,</span>
+                    <span class="n">baseline</span><span class="o">=</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+                    <span class="n">reject</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">mag</span><span class="o">=</span><span class="mf">4e-12</span><span class="p">,</span> <span class="n">grad</span><span class="o">=</span><span class="mf">4000e-13</span><span class="p">,</span> <span class="n">eog</span><span class="o">=</span><span class="mf">150e-6</span><span class="p">))</span>
+
+<span class="c"># Compute inverse solution and stcs for each epoch</span>
+<span class="n">stcs</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">minimum_norm</span><span class="o">.</span><span class="n">apply_inverse_epochs</span><span class="p">(</span><span class="n">epochs</span><span class="p">,</span> <span class="n">inverse_operator</span><span class="p">,</span>
+            <span class="n">lambda2</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">pick_normal</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="index.rst">index.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              15/19
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: index.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Power and Phase Lock in Src. Space</h1></header>
+            
+            
+            <section><pre><span class="kn">import</span> <span class="nn">mne</span>
+<span class="kn">from</span> <span class="nn">mne.minimum_norm</span> <span class="kn">import</span> <span class="n">read_inverse_operator</span><span class="p">,</span> <span class="n">source_induced_power</span>
+
+<span class="n">tmin</span><span class="p">,</span> <span class="n">tmax</span><span class="p">,</span> <span class="n">event_id</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span>
+
+<span class="o">...</span>  <span class="c"># read raw etc.</span>
+
+<span class="n">epochs</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">Epochs</span><span class="p">(</span><span class="n">raw</span><span class="p">,</span> <span class="n">events</span><span class="p">,</span> <span class="n">event_id</span><span class="p">,</span> <span class="n">tmin</span><span class="p">,</span> <span class="n">tmax</span><span class="p">,</span> <span class="n">picks</span><span class="o">=</span><span class="n">picks</span><span class="p">,</span>
+            <span class="n">baseline</span><span class="o">=</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">reject</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">grad</span><span class="o">=</span><span class="mf">4000e-13</span><span class="p">,</span> <span class="n">eog</span><span class="o">=</span><span class="mf">150e-6</span><span class="p">),</span>
+            <span class="n">preload</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="c"># Compute a source estimate per frequency band</span>
+<span class="n">freqs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>  <span class="c"># define frequencies of interest</span>
+<span class="n">label</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">read_label</span><span class="p">(</span><span class="n">fname_label</span><span class="p">)</span>
+<span class="n">power</span><span class="p">,</span> <span class="n">phase_lock</span> <span class="o">=</span> <span class="n">source_induced_power</span><span class="p">(</span><span class="n">epochs</span><span class="p">,</span> <span class="n">inverse_operator</span><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span>
+            <span class="n">label</span><span class="p">,</span> <span class="n">baseline</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">baseline_mode</span><span class="o">=</span><span class="s">&#39;percent&#39;</span><span class="p">,</span> <span class="n">n_cycles</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre>
+<img alt="images/phase_lock.png" src="images/phase_lock.png" style="width: 797.5px; height: 165.0px;" /></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="index.rst">index.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              16/19
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: index.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Computing SSPs for ECG and EOG</h1></header>
+            
+            
+            <section><p>First compute ECG projections with:</p>
+<pre><span class="nv">$mne_compute_proj_ecg</span>.py -i protocol_run1_raw.fif --l-freq 1 --h-freq 100 <span class="se">\</span>
+--rej-grad 3000 --rej-mag 4000 --rej-eeg 100 --average -c <span class="s2">&quot;ECG063&quot;</span> <span class="se">\</span>
+--ecg-h-freq 25 --tstart 5
+</pre>
+<p>Detects heartbeats using the channel ECG063 &amp; computes the projections on data filtered between 1 and 100Hz &amp; saves 2 files:
+The events in (you should look at them in mne_browse_raw)</p>
+<p><em>protocol_run1_raw_ecg-eve.fif</em></p>
+<p>and the file containing the projections (look at their effect with mne_browse_raw)</p>
+<p><em>protocol_run1_raw_ecg_avg_proj.fif</em></p>
+<p>For general help on the command:</p>
+<pre><span class="nv">$mne_compute_proj_ecg</span>.py -h
+</pre>
+<p>For EOG now:</p>
+<pre><span class="nv">$mne_compute_proj_eog</span>.py -i protocol_run1_raw.fif --l-freq 1 --h-freq 35 <span class="se">\</span>
+--rej-grad 3000 --rej-mag 4000 --rej-eeg 100 <span class="se">\</span>
+--proj protocol_run1_raw_ecg_avg_proj.fif –average
+</pre>
+<p>This will save <em>protocol_run1_raw_eog-eve.fif</em> containing the events and
+<em>protocol_run1_raw_eog_avg_proj.fif</em> containing the SSP projections.</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="index.rst">index.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              17/19
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: index.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Future Plans</h1></header>
+            
+            
+            <section><ul class="simple">
+<li>Beamformers</li>
+<li>Mixed-norm source estimates</li>
+<li>Noise covariance computation with automatic regularization</li>
+<li>Coherence computation in sensor and source space (multi-taper method from nitime)</li>
+<li>Network- and connectivity analysis</li>
+<li><strong>What ever you want to contribute</strong></li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="index.rst">index.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              18/19
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: index.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Some links</h1></header>
+            
+            
+            <section><p>Doc:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://martinos.org/mne/">http://martinos.org/mne/</a> (general doc)</li>
+<li><a class="reference external" href="http://martinos.org/mne/python_tutorial.html">http://martinos.org/mne/python_tutorial.html</a> (python tutorial)</li>
+<li><a class="reference external" href="http://martinos.org/mne/auto_examples/index.html">http://martinos.org/mne/auto_examples/index.html</a> (python examples)</li>
+</ul>
+<p>Code:</p>
+<ul class="simple">
+<li><a class="reference external" href="https://github.com/mne-tools/mne-python">https://github.com/mne-tools/mne-python</a> (mne-python code)</li>
+<li><a class="reference external" href="https://github.com/mne-tools/mne-scripts">https://github.com/mne-tools/mne-scripts</a> (mne shell scripts)</li>
+<li><a class="reference external" href="https://github.com/mne-tools/mne-matlab">https://github.com/mne-tools/mne-matlab</a> (mne matlab toolbox)</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="index.rst">index.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              19/19
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+  <div id="toc" class="sidebar hidden">
+    <h2>Table of Contents</h2>
+    <table>
+      <caption>Table of Contents</caption>
+      
+      <tr id="toc-row-1">
+        <th><a href="#slide1">-</a></th>
+        <td><a href="#slide1">1</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-2">
+        <th><a href="#slide2">Outline:</a></th>
+        <td><a href="#slide2">2</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-3">
+        <th><a href="#slide3">MNE-Python Design Principles</a></th>
+        <td><a href="#slide3">3</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-4">
+        <th><a href="#slide4">MNE-Python Status</a></th>
+        <td><a href="#slide4">4</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-5">
+        <th><a href="#slide5">Key Features</a></th>
+        <td><a href="#slide5">5</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-6">
+        <th><a href="#slide6">Key Features Cont.</a></th>
+        <td><a href="#slide6">6</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-7">
+        <th><a href="#slide7">What MNE-Python Can't Do</a></th>
+        <td><a href="#slide7">7</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-8">
+        <th><a href="#slide8">Reading and Plotting Raw Data</a></th>
+        <td><a href="#slide8">8</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-9">
+        <th><a href="#slide9">Band-pass Filter Raw File</a></th>
+        <td><a href="#slide9">9</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-10">
+        <th><a href="#slide10">Multi-Tapper PSD of Raw Data</a></th>
+        <td><a href="#slide10">10</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-11">
+        <th><a href="#slide11">Computing Contrasts</a></th>
+        <td><a href="#slide11">11</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-12">
+        <th><a href="#slide12">Evoked Response and Noise Cov.</a></th>
+        <td><a href="#slide12">12</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-13">
+        <th><a href="#slide13">dSPM Inverse Solution</a></th>
+        <td><a href="#slide13">13</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-14">
+        <th><a href="#slide14">dSPM Inv. Sol. in Volume Source Space</a></th>
+        <td><a href="#slide14">14</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-15">
+        <th><a href="#slide15">dSPM Inv. Sol. on Single Epochs</a></th>
+        <td><a href="#slide15">15</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-16">
+        <th><a href="#slide16">Power and Phase Lock in Src. Space</a></th>
+        <td><a href="#slide16">16</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-17">
+        <th><a href="#slide17">Computing SSPs for ECG and EOG</a></th>
+        <td><a href="#slide17">17</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-18">
+        <th><a href="#slide18">Future Plans</a></th>
+        <td><a href="#slide18">18</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-19">
+        <th><a href="#slide19">Some links</a></th>
+        <td><a href="#slide19">19</a></td>
+      </tr>
+      
+      
+    </table>
+  </div>
+  
+  <div id="help" class="sidebar hidden">
+    <h2>Help</h2>
+    <table>
+      <caption>Help</caption>
+      <tr>
+        <th>Table of Contents</th>
+        <td>t</td>
+      </tr>
+      <tr>
+        <th>Exposé</th>
+        <td>ESC</td>
+      </tr>
+      <tr>
+        <th>Full screen slides</th>
+        <td>e</td>
+      </tr>
+      <tr>
+        <th>Presenter View</th>
+        <td>p</td>
+      </tr>
+      <tr>
+        <th>Source Files</th>
+        <td>s</td>
+      </tr>
+      <tr>
+        <th>Slide Numbers</th>
+        <td>n</td>
+      </tr>
+      <tr>
+        <th>Toggle screen blanking</th>
+        <td>b</td>
+      </tr>
+      <tr>
+        <th>Show/hide slide context</th>
+        <td>c</td>
+      </tr>
+      <tr>
+        <th>Notes</th>
+        <td>2</td>
+      </tr>
+      <tr>
+        <th>Help</th>
+        <td>h</td>
+      </tr>
+    </table>
+  </div>
+  <script>main()</script>
+</body>
+</html>
