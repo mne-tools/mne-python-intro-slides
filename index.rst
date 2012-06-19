@@ -441,7 +441,7 @@ Future Plans
 - Noise covariance computation with automatic regularization
 - Coherence computation in sensor and source space (multi-taper method from nitime)
 - Network- and connectivity analysis
-- **What ever you want to contribute**
+- **Whatever you want to contribute**
 
 ----
 
