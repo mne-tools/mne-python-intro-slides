@@ -185,32 +185,6 @@ Multi-Tapper PSD of Raw Data
 
 ----
 
-Computing Contrasts
--------------------
-
-.. sourcecode:: python
-
-   import mne
-
-   ...
-
-   epochs1 = mne.Epochs(raw, events, event_id1, tmin, tmax, picks=picks,
-                        baseline=(None, 0), reject=reject)
-   epochs2 = mne.Epochs(raw, events, event_id2, tmin, tmax, picks=picks,
-                        baseline=(None, 0), reject=reject)
-
-   evoked1 = epochs1.average()
-   evoked2 = epochs2.average()
-
-   contrast = evoked1 - evoked2
-
-- Arithmetic operations are supported for Evoked, SourceEstimate, and Covariance
-- The number of averages, degrees of freedom, etc. are used during the calculation
-- An exception is raised if the objects are incompatible
-  (e.g. different SSP projectors in covariances)
-
-----
-
 Evoked Response and Noise Cov.
 ------------------------------------
 
@@ -238,6 +212,32 @@ Evoked Response and Noise Cov.
     # save them
     evoked.save('event_%d-evoked.fif' % event_id)
     cov.save('event_%d-cov.fif' % event_id)
+
+----
+
+Computing Contrasts
+-------------------
+
+.. sourcecode:: python
+
+   import mne
+
+   ...
+
+   epochs1 = mne.Epochs(raw, events, event_id1, tmin, tmax, picks=picks,
+                        baseline=(None, 0), reject=reject)
+   epochs2 = mne.Epochs(raw, events, event_id2, tmin, tmax, picks=picks,
+                        baseline=(None, 0), reject=reject)
+
+   evoked1 = epochs1.average()
+   evoked2 = epochs2.average()
+
+   contrast = evoked1 - evoked2
+
+- Arithmetic operations are supported for Evoked, SourceEstimate, and Covariance
+- The number of averages, degrees of freedom, etc. are used during the calculation
+- An exception is raised if the objects are incompatible
+  (e.g. different SSP projectors in covariances)
 
 ----
 

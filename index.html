@@ -1692,55 +1692,6 @@ div.slide div.presenter_notes {
         <div class="slide">
           <div class="inner">
             
-            <header><h1>Computing Contrasts</h1></header>
-            
-            
-            <section><pre><span class="kn">import</span> <span class="nn">mne</span>
-
-<span class="o">...</span>
-
-<span class="n">epochs1</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">Epochs</span><span class="p">(</span><span class="n">raw</span><span class="p">,</span> <span class="n">events</span><span class="p">,</span> <span class="n">event_id1</span><span class="p">,</span> <span class="n">tmin</span><span class="p">,</span> <span class="n">tmax</span><span class="p">,</span> <span class="n">picks</span><span class="o">=</span><span class="n">picks</span><span class="p">,</span>
-                     <span class="n">baseline</span><span class="o">=</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">reject</span><span class="o">=</span><span class="n">reject</span><span class="p">)</span>
-<span class="n">epochs2</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">Epochs</span><span class="p">(</span><span class="n">raw</span><span class="p">,</span> <span class="n">events</span><span class="p">,</span> <span class="n">event_id2</span><span class="p">,</span> <span class="n">tmin</span><span class="p">,</span> <span class="n">tmax</span><span class="p">,</span> <span class="n">picks</span><span class="o">=</span><span class="n">picks</span><span class="p">,</span>
-                     <span class="n">baseline</span><span class="o">=</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">reject</span><span class="o">=</span><span class="n">reject</span><span class="p">)</span>
-
-<span class="n">evoked1</span> <span class="o">=</span> <span class="n">epochs1</span><span class="o">.</span><span class="n">average</span><span class="p">()</span>
-<span class="n">evoked2</span> <span class="o">=</span> <span class="n">epochs2</span><span class="o">.</span><span class="n">average</span><span class="p">()</span>
-
-<span class="n">contrast</span> <span class="o">=</span> <span class="n">evoked1</span> <span class="o">-</span> <span class="n">evoked2</span>
-</pre>
-<ul class="simple">
-<li>Arithmetic operations are supported for Evoked, SourceEstimate, and Covariance</li>
-<li>The number of averages, degrees of freedom, etc. are used during the calculation</li>
-<li>An exception is raised if the objects are incompatible
-(e.g. different SSP projectors in covariances)</li>
-</ul></section>
-            
-          </div>
-          <div class="presenter_notes">
-            <header><h1>Presenter Notes</h1></header>
-            <section>
-            
-            </section>
-          </div>
-          <footer>
-            
-            <aside class="source">
-              Source: <a href="index.rst">index.rst</a>
-            </aside>
-            
-            <aside class="page_number">
-              11/21
-            </aside>
-          </footer>
-        </div>
-      </div>
-      
-      <!-- slide source: index.rst -->
-      <div class="slide-wrapper">
-        <div class="slide">
-          <div class="inner">
-            
             <header><h1>Evoked Response and Noise Cov.</h1></header>
             
             
@@ -1767,6 +1718,55 @@ div.slide div.presenter_notes {
 <span class="n">evoked</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s">&#39;event_</span><span class="si">%d</span><span class="s">-evoked.fif&#39;</span> <span class="o">%</span> <span class="n">event_id</span><span class="p">)</span>
 <span class="n">cov</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s">&#39;event_</span><span class="si">%d</span><span class="s">-cov.fif&#39;</span> <span class="o">%</span> <span class="n">event_id</span><span class="p">)</span>
 </pre></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="index.rst">index.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              11/21
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: index.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Computing Contrasts</h1></header>
+            
+            
+            <section><pre><span class="kn">import</span> <span class="nn">mne</span>
+
+<span class="o">...</span>
+
+<span class="n">epochs1</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">Epochs</span><span class="p">(</span><span class="n">raw</span><span class="p">,</span> <span class="n">events</span><span class="p">,</span> <span class="n">event_id1</span><span class="p">,</span> <span class="n">tmin</span><span class="p">,</span> <span class="n">tmax</span><span class="p">,</span> <span class="n">picks</span><span class="o">=</span><span class="n">picks</span><span class="p">,</span>
+                     <span class="n">baseline</span><span class="o">=</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">reject</span><span class="o">=</span><span class="n">reject</span><span class="p">)</span>
+<span class="n">epochs2</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">Epochs</span><span class="p">(</span><span class="n">raw</span><span class="p">,</span> <span class="n">events</span><span class="p">,</span> <span class="n">event_id2</span><span class="p">,</span> <span class="n">tmin</span><span class="p">,</span> <span class="n">tmax</span><span class="p">,</span> <span class="n">picks</span><span class="o">=</span><span class="n">picks</span><span class="p">,</span>
+                     <span class="n">baseline</span><span class="o">=</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">reject</span><span class="o">=</span><span class="n">reject</span><span class="p">)</span>
+
+<span class="n">evoked1</span> <span class="o">=</span> <span class="n">epochs1</span><span class="o">.</span><span class="n">average</span><span class="p">()</span>
+<span class="n">evoked2</span> <span class="o">=</span> <span class="n">epochs2</span><span class="o">.</span><span class="n">average</span><span class="p">()</span>
+
+<span class="n">contrast</span> <span class="o">=</span> <span class="n">evoked1</span> <span class="o">-</span> <span class="n">evoked2</span>
+</pre>
+<ul class="simple">
+<li>Arithmetic operations are supported for Evoked, SourceEstimate, and Covariance</li>
+<li>The number of averages, degrees of freedom, etc. are used during the calculation</li>
+<li>An exception is raised if the objects are incompatible
+(e.g. different SSP projectors in covariances)</li>
+</ul></section>
             
           </div>
           <div class="presenter_notes">
@@ -2260,13 +2260,13 @@ The events in (you should look at them in mne_browse_raw)</p>
       
       
       <tr id="toc-row-11">
-        <th><a href="#slide11">Computing Contrasts</a></th>
+        <th><a href="#slide11">Evoked Response and Noise Cov.</a></th>
         <td><a href="#slide11">11</a></td>
       </tr>
       
       
       <tr id="toc-row-12">
-        <th><a href="#slide12">Evoked Response and Noise Cov.</a></th>
+        <th><a href="#slide12">Computing Contrasts</a></th>
         <td><a href="#slide12">12</a></td>
       </tr>
       
