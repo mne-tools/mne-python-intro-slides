@@ -240,6 +240,26 @@ Evoked Response and Noise Cov.
 
 ----
 
+Visualizing the Noise Covariance
+------------------------------------
+
+.. sourcecode:: python
+
+    import mne
+
+    ...
+
+    cov = mne.compute_covariance(epochs, tmax=0)
+    # Show covariance
+    mne.viz.plot_cov(cov, raw.info, exclude=raw.info['bads'], colorbar=True,
+                     proj=True)  # try setting proj to False to see the effect
+
+.. image:: images/plot_cov.png
+    :scale: 100%
+
+
+----
+
 dSPM Inverse Solution
 -------------------------
 

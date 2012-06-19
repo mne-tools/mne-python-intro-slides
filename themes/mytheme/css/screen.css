@@ -138,7 +138,7 @@ header:not(:only-child) {
 
 header h1, header h2, header h3, header h4, header h5, header h6 {
   display: inline;
-  font-size: 100%;
+  font-size: 90%;
   font-weight: normal;
   padding: 0;
   margin: 0;
