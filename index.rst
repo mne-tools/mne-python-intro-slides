@@ -3,10 +3,11 @@
    <img width="800" class="titleimg" src="images/logo_transp_bg.png"/>
    <span class="mytitle">MNE-Python: MNE with Python</span>
    <span class="authors">
-    Alexandre Gramfort, Martin Luessi, Matti S. Hamalainen
+    Alexandre Gramfort, Martin Luessi, Dan G. Wakeman,<br>
+    Matti S. H&auml;m&auml;l&auml;inen
    </span>
 
-Aalto University, June 19, 2012
+Neuroinformatics 2012, MBL, August 16, 2012
 
 Link to these slides: http://mne-tools.github.com/mne-python-intro-slides
 
@@ -55,9 +56,12 @@ MNE-Python Status
 
 - Current version: 0.3 (released March 23, 2012)
 - Main contributors: Alexandre Gramfort and Martin Luessi (hopefully more in the future)
-- 7870 lines of code, 4530 lines of comments
-- 62 unit tests, 81% test coverage
-- 33 examples
+- 14535 lines of code, 6927 lines of comments
+- 82 unit tests, 81% test coverage
+- 39 examples
+
+.. image:: images/sloc_july_2012.png
+   :scale: 120%
 
 ----
 
@@ -74,12 +78,18 @@ Preprocessing
 - Compute noise covariance matrix
 - Extract epochs and compute evoked responses
 
+----
+
+Key Features Cont.
+------------------
 
 Inverse Solution
 ~~~~~~~~~~~~~~~~
 
-- Compute MNE/dSPM/sLORETA inverse operator
+- Compute MNE/dSPM/sLORETA inverse operators
 - Compute inverse solution for evoked, epochs and raw data
+- Compute Linearly-Constrained Minimum Variance (LCMV) beamformer solution
+- Efficient computation of mixed norm (MxNE) inverse solution
 - Morph source space data between subjects (using FreeSurfer registration)
 - Save source space data as .stc, .w, or .nii.gz (4D NIfTI) file
 
@@ -91,13 +101,13 @@ Key Features Cont.
 Time-Frequency Analysis
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-- Compute multi-taper PSD of raw data
+- Compute power spectral density (PSD) in sensor and source space
 - Compute induced power and phase lock in sensor and source space
 
 Statistics
 ~~~~~~~~~~
 
-- Permutation F and T tests
+- F test, permutation T test
 - Non-parametric cluster statistics
 
 ----
@@ -163,7 +173,7 @@ Notice:
 
 ----
 
-Multi-Tapper PSD of Raw Data
+PSD of Raw Data
 ----------------------------
 
 .. sourcecode:: python
@@ -314,11 +324,11 @@ dSPM Inv. Sol. in Volume Source Space
 .. sourcecode:: python
 
     from mne.minimum_norm import apply_inverse, read_inverse_operator
-    
+
     snr = 3.0
     lambda2 = 1.0 / snr ** 2
     method = 'dSPM'
-    
+
     # Load data
     evoked = mne.fiff.Evoked(fname_evoked, setno=0, baseline=(None, 0))
     inverse_operator = read_inverse_operator(fname_inv)
@@ -363,6 +373,70 @@ dSPM Inv. Sol. on Single Epochs
     # Compute inverse solution and stcs for each epoch
     stcs = apply_inverse_epochs(epochs, inverse_operator,
                                 lambda2, method, label, pick_normal=True)
+
+----
+
+LCMV Beamformer Solution
+------------------------
+
+.. sourcecode:: python
+
+    import mne
+    from mne.beamformer import lcmv
+
+    ... # read raw etc.
+
+    # Use only left-temporal channels
+    left_temporal_channels = mne.read_selection('Left-temporal')
+    picks = pick_types(raw.info, meg=True, eeg=False, stim=True, eog=True,
+                       exclude=raw.info['bads'],
+                       selection=left_temporal_channels)
+
+    # Compute evoked response, noise- and data covariance matrices
+    epochs = mne.Epochs(raw, events, event_id, tmin, tmax, proj=True,
+                        picks=picks, baseline=(None, 0), preload=True,
+                        reject=dict(grad=4000e-13, mag=4e-12, eog=150e-6))
+    evoked = epochs.average()
+
+    forward = mne.read_forward_solution(fname_fwd)
+
+    noise_cov = mne.read_cov(fname_cov)
+    noise_cov = mne.cov.regularize(noise_cov, evoked.info,
+                                   mag=0.05, grad=0.05, eeg=0.1, proj=True)
+    data_cov = mne.compute_covariance(epochs, tmin=0.04, tmax=0.15)
+
+    stc = lcmv(evoked, forward, noise_cov, data_cov, reg=0.01)
+
+
+----
+
+Mixed norm (MxNE) Inverse Solution
+----------------------------------
+
+.. sourcecode:: python
+
+    from mne.mixed_norm import mixed_norm
+    from mne.minimum_norm import make_inverse_operator, apply_inverse
+    ...
+
+    alpha = 70  # regularization parameter between 0 and 100 (100 is high)
+    loose, depth = 0.2, 0.9  # loose orientation & depth weighting
+
+    # Compute dSPM solution to be used as weights in MxNE
+    inverse_operator = make_inverse_operator(evoked.info, forward, cov,
+                                             loose=loose, depth=depth)
+    stc_dspm = apply_inverse(evoked, inverse_operator, lambda2=1. / 9.,
+                             method='dSPM')
+
+    # Compute MxNE inverse solution
+    stc, residual = mixed_norm(evoked, forward, cov, alpha, loose=loose,
+                     depth=depth, maxit=3000, tol=1e-4, active_set_size=10,
+                     debias=True, weights=stc_dspm, weights_min=8.,
+                     return_residual=True)
+
+
+.. image:: images/mxne.png
+   :scale: 35%
 
 ----
 
@@ -435,8 +509,6 @@ This will save *protocol_run1_raw_eog-eve.fif* containing the events and
 Future Plans
 ------------
 
-- Beamformers
-- Mixed-norm source estimates
 - Noise covariance computation with automatic regularization
 - Coherence computation in sensor and source space (multi-taper method from nitime)
 - Network- and connectivity analysis
