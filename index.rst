@@ -429,14 +429,13 @@ Mixed norm (MxNE) Inverse Solution
                              method='dSPM')
 
     # Compute MxNE inverse solution
-    stc, residual = mixed_norm(evoked, forward, cov, alpha, loose=loose,
+    stc = mixed_norm(evoked, forward, cov, alpha, loose=loose,
                      depth=depth, maxit=3000, tol=1e-4, active_set_size=10,
-                     debias=True, weights=stc_dspm, weights_min=8.,
-                     return_residual=True)
+                     debias=True, weights=stc_dspm, weights_min=8.)
 
 
 .. image:: images/mxne.png
-   :scale: 35%
+   :scale: 40%
 
 ----
 
@@ -463,7 +462,7 @@ Power and Phase Lock in Src. Space
                 label, baseline=(-0.1, 0), baseline_mode='percent', n_cycles=2)
 
 .. image:: images/phase_lock.png
-   :scale: 55%
+   :scale: 60%
 
 ----
 

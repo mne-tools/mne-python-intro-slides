@@ -888,12 +888,11 @@
                          <span class="n">method</span><span class="o">=</span><span class="s">&#39;dSPM&#39;</span><span class="p">)</span>
 
 <span class="c"># Compute MxNE inverse solution</span>
-<span class="n">stc</span><span class="p">,</span> <span class="n">residual</span> <span class="o">=</span> <span class="n">mixed_norm</span><span class="p">(</span><span class="n">evoked</span><span class="p">,</span> <span class="n">forward</span><span class="p">,</span> <span class="n">cov</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">loose</span><span class="o">=</span><span class="n">loose</span><span class="p">,</span>
+<span class="n">stc</span> <span class="o">=</span> <span class="n">mixed_norm</span><span class="p">(</span><span class="n">evoked</span><span class="p">,</span> <span class="n">forward</span><span class="p">,</span> <span class="n">cov</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">loose</span><span class="o">=</span><span class="n">loose</span><span class="p">,</span>
                  <span class="n">depth</span><span class="o">=</span><span class="n">depth</span><span class="p">,</span> <span class="n">maxit</span><span class="o">=</span><span class="mi">3000</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">active_set_size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
-                 <span class="n">debias</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">stc_dspm</span><span class="p">,</span> <span class="n">weights_min</span><span class="o">=</span><span class="mf">8.</span><span class="p">,</span>
-                 <span class="n">return_residual</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+                 <span class="n">debias</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">stc_dspm</span><span class="p">,</span> <span class="n">weights_min</span><span class="o">=</span><span class="mf">8.</span><span class="p">)</span>
 </pre>
-<img alt="images/mxne.png" src="images/mxne.png" style="width: 525.0px; height: 183.05px;" /></section>
+<img alt="images/mxne.png" src="images/mxne.png" style="width: 600.0px; height: 209.2px;" /></section>
             
           </div>
           <div class="presenter_notes">
@@ -940,7 +939,7 @@
 <span class="n">power</span><span class="p">,</span> <span class="n">phase_lock</span> <span class="o">=</span> <span class="n">source_induced_power</span><span class="p">(</span><span class="n">epochs</span><span class="p">,</span> <span class="n">inverse_operator</span><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span>
             <span class="n">label</span><span class="p">,</span> <span class="n">baseline</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">baseline_mode</span><span class="o">=</span><span class="s">&#39;percent&#39;</span><span class="p">,</span> <span class="n">n_cycles</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 </pre>
-<img alt="images/phase_lock.png" src="images/phase_lock.png" style="width: 797.5px; height: 165.0px;" /></section>
+<img alt="images/phase_lock.png" src="images/phase_lock.png" style="width: 870.0px; height: 180.0px;" /></section>
             
           </div>
           <div class="presenter_notes">
