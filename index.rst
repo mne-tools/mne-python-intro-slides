@@ -3,11 +3,10 @@
    <img width="800" class="titleimg" src="images/logo_transp_bg.png"/>
    <span class="mytitle">MNE-Python: MNE with Python</span>
    <span class="authors">
-    Alexandre Gramfort, Martin Luessi, Dan G. Wakeman,<br>
-    Matti S. H&auml;m&auml;l&auml;inen
+   <br>Alexandre Gramfort, Martin Luessi, Matti S. H&auml;m&auml;l&auml;inen
    </span>
 
-Neuroinformatics 2012, MBL, August 16, 2012
+CRC Physiology & Data Analysis Meeting, MIT, November 13, 2012
 
 Link to these slides: http://mne-tools.github.com/mne-python-intro-slides
 
@@ -16,27 +15,27 @@ Link to these slides: http://mne-tools.github.com/mne-python-intro-slides
 Outline:
 --------
 
+- Why Python?
 - Design Principles
 - Status
-- Feature overview
+- Feature Overview
 - Example Usage
-- Future Plans
+- New Features in Next Release
 
 ----
 
-.. Why use Python for MEG?
-.. -----------------------------------
-..
-.. - Python is free (as in speech)
-.. - It "combines remarkable power with very clear syntax" [1]_
-.. - Well suited for high performance numerical computing (NumPy, SciPy, ...)
-.. - High quality 2D and 3D visualizations (pylab, mlab, ...)
-.. - Increasingly popular in neuroscience (nipy, nipype, nitime, ...)
-..
-..
-.. .. [1] `<http://docs.python.org/faq/general.html#what-is-python/>`_
-..
-.. ----
+Why use Python for MEG?
+-----------------------------------
+
+- Python is free (as in speech)
+- It "combines remarkable power with very clear syntax" [1]_
+- Well suited for high performance numerical computing (NumPy, SciPy, ...)
+- High quality 2D and 3D visualizations (pylab, mlab, ...)
+- Increasingly popular in neuroscience (nipy, nipype, nitime, ...)
+
+.. [1] `<http://docs.python.org/faq/general.html#what-is-python/>`_
+
+----
 
 MNE-Python Design Principles
 ----------------------------
@@ -45,6 +44,7 @@ MNE-Python Design Principles
 - Extend functionality of the MNE command line tools
 - Implement all features of the MNE Matlab toolbox
 - Simplicity, clean code, and good documentation
+- Computationally efficient implementation, use parallel processing
 - Permissive BSD license (allows use in commercial products)
 - Open development `<http://github.com/mne-tools/mne-python>`_
 - Do not depend on any commercial software
@@ -54,14 +54,25 @@ MNE-Python Design Principles
 MNE-Python Status
 -----------------
 
-- Current version: 0.3 (released March 23, 2012)
-- Main contributors: Alexandre Gramfort and Martin Luessi (hopefully more in the future)
-- 14535 lines of code, 6927 lines of comments
-- 82 unit tests, 81% test coverage
-- 39 examples
+- Current version: 0.4 (released August 22, 2012)
+- 19505 lines of code, 10591 lines of comments
+- 114 unit tests, 81% test coverage
+- 54 examples
 
-.. image:: images/sloc_july_2012.png
-   :scale: 120%
+.. image:: images/sloc_nov_2012.png
+   :scale: 100%
+
+----
+
+
+Main Contributors
+-----------------
+
+- Alexandre Gramfort (Telecom ParisTech, France)
+- Eric Larson (University of Washington, United States)
+- Martin Luessi (MGH Martinos Center, United States)
+- Denis Engemann (Juelich Research Centre, Germany)
+- ..hopefully more in the future
 
 ----
 
@@ -505,13 +516,18 @@ This will save *protocol_run1_raw_eog-eve.fif* containing the events and
 
 ----
 
-Future Plans
-------------
+New Features in Upcoming 0.5 Release
+------------------------------------
 
-- Noise covariance computation with automatic regularization
-- Coherence computation in sensor and source space (multi-taper method from nitime)
-- Network- and connectivity analysis
-- **Whatever you want to contribute**
+- Artifact removal using ICA
+- Pairwise connectivity analysis (sensor and source space)
+- More efficient and user-friendly cluster-level statistics
+- Mutli-taper PSD estimation
+- Improved and new plotting functions, e.g., time-frequency topographies
+- Export Raw, Epochs, and Evoked to nitime_
+- ..tons of other improvements
+
+.. _nitime: http://nipy.sourceforge.net/nitime
 
 ----
 
