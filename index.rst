@@ -2,11 +2,8 @@
 
    <img width="800" class="titleimg" src="images/logo_transp_bg.png"/>
    <span class="mytitle">MNE-Python: MNE with Python</span>
-   <span class="authors">
-   <br>Alexandre Gramfort, Martin Luessi, Matti S. H&auml;m&auml;l&auml;inen
-   </span>
 
-CRC Physiology & Data Analysis Meeting, MIT, November 13, 2012
+MNE website: http://martinos.org/mne
 
 Link to these slides: http://mne-tools.github.com/mne-python-intro-slides
 
@@ -20,18 +17,18 @@ Outline:
 - Status
 - Feature Overview
 - Example Usage
-- New Features in Next Release
 
 ----
 
 Why use Python for MEG?
 -----------------------------------
 
-- Python is free (as in speech)
-- It "combines remarkable power with very clear syntax" [1]_
-- Well suited for high performance numerical computing (NumPy, SciPy, ...)
-- High quality 2D and 3D visualizations (pylab, mlab, ...)
-- Increasingly popular in neuroscience (nipy, nipype, nitime, ...)
+- Python is an **intepreted high-level programming language**
+- Python is **free** (as in speech)
+- It "combines **remarkable power** with **very clear syntax**" [1]_
+- Well suited for **high performance numerical computing** (NumPy, SciPy, ...)
+- High quality **2D and 3D visualization** (pylab, mlab, ...)
+- Increasingly **popular in neuroscience** (nipy, nipype, nitime, ...)
 
 .. [1] `<http://docs.python.org/faq/general.html#what-is-python/>`_
 
@@ -72,7 +69,8 @@ Main Contributors
 - Eric Larson (University of Washington, United States)
 - Martin Luessi (MGH Martinos Center, United States)
 - Denis Engemann (Juelich Research Centre, Germany)
-- ..hopefully more in the future
+- Christian Brodbeck (New York University, United States)
+- **you**?
 
 ----
 
@@ -88,6 +86,8 @@ Preprocessing
 - Extract events from raw files
 - Compute noise covariance matrix
 - Extract epochs and compute evoked responses
+- **New in 0.5**: Artifact removal using ICA
+- **New in 0.5**: Export data (raw, epochs, evoked) to nitime and pandas
 
 ----
 
@@ -103,6 +103,7 @@ Inverse Solution
 - Efficient computation of mixed norm (MxNE) inverse solution
 - Morph source space data between subjects (using FreeSurfer registration)
 - Save source space data as .stc, .w, or .nii.gz (4D NIfTI) file
+- **New in 0.5**: Read and visualize dipole fit (.dip) files
 
 ----
 
@@ -114,6 +115,7 @@ Time-Frequency Analysis
 
 - Compute power spectral density (PSD) in sensor and source space
 - Compute induced power and phase lock in sensor and source space
+- **New in 0.5**: Spectrum estimation using multi-taper method
 
 Statistics
 ~~~~~~~~~~
@@ -122,6 +124,17 @@ Statistics
 - Non-parametric cluster statistics
 
 ----
+
+**New in 0.5**: Connectivity Estimation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- Sensor space and source space
+- Flexible configuration of seed-based or all-to-all connectivity
+- Supported measures: Coherence, Imag. Coherence, PLV, PLI, WPLI, ...
+- Computationally efficient
+
+----
+
 
 What MNE-Python Can't Do
 ------------------------
@@ -241,19 +254,19 @@ Computing Contrasts
 
 .. sourcecode:: python
 
-   import mne
+    import mne
 
-   ...
+    ...
 
-   epochs1 = mne.Epochs(raw, events, event_id1, tmin, tmax, picks=picks,
+    epochs1 = mne.Epochs(raw, events, event_id1, tmin, tmax, picks=picks,
                         baseline=(None, 0), reject=reject)
-   epochs2 = mne.Epochs(raw, events, event_id2, tmin, tmax, picks=picks,
-                        baseline=(None, 0), reject=reject)
+    epochs2 = mne.Epochs(raw, events, event_id2, tmin, tmax, picks=picks,
+                       baseline=(None, 0), reject=reject)
 
-   evoked1 = epochs1.average()
-   evoked2 = epochs2.average()
+    evoked1 = epochs1.average()
+    evoked2 = epochs2.average()
 
-   contrast = evoked1 - evoked2
+    contrast = evoked1 - evoked2
 
 - Arithmetic operations are supported for Evoked, SourceEstimate, and Covariance
 - The number of averages, degrees of freedom, etc. are used during the calculation
@@ -351,10 +364,9 @@ dSPM Inv. Sol. in Volume Source Space
     # Save result in a 4D nifti file
     src = inverse_operator['src']
     img = mne.save_stc_as_volume('mne_%s_inverse.nii.gz' % method, stc,
-            src, mri_resolution=False)  # set to True for full MRI resolution
+          src, mri_resolution=False)  # set to True for full MRI resolution
 
 ----
-
 
 dSPM Inv. Sol. on Single Epochs
 -----------------------------------
@@ -383,7 +395,8 @@ dSPM Inv. Sol. on Single Epochs
 
     # Compute inverse solution and stcs for each epoch
     stcs = apply_inverse_epochs(epochs, inverse_operator,
-                                lambda2, method, label, pick_normal=True)
+                                lambda2, method, label, pick_normal=True,
+                                return_generator=True)
 
 ----
 
@@ -477,6 +490,32 @@ Power and Phase Lock in Src. Space
 
 ----
 
+Time-Frequency Connectivity Estimation
+--------------------------------------
+
+.. sourcecode:: python
+
+    import mne
+    from mne.connectivity import spectral_connectivity
+
+    # Create epochs for left-visual condition
+    event_id, tmin, tmax = 3, -0.2, 0.5
+    epochs = mne.Epochs(raw, events, event_id, tmin, tmax, picks=picks,
+                    baseline=(None, 0), reject=dict(grad=4000e-13, eog=150e-6))
+
+    # Compute connectivity
+    indices = seed_target_indices(epochs.ch_names.index('MEG 2343'),
+                                  np.arange(len(epochs.ch_names)))
+
+    con, freqs, times, _, _ = spectral_connectivity(epochs, indices=indices,
+        method='wpli2_debiased', mode='cwt_morlet', sfreq=raw.info['sfreq'],
+        cwt_frequencies=np.arange(7, 30, 2), n_jobs=4)
+
+.. image:: images/cwt_sensor_connectivity.png
+   :scale: 40%
+
+----
+
 Computing SSPs for ECG and EOG
 --------------------------------------------------
 
@@ -484,9 +523,9 @@ First compute ECG projections with:
 
 .. sourcecode:: bash
 
-   $mne_compute_proj_ecg.py -i protocol_run1_raw.fif --l-freq 1 --h-freq 100 \
-   --rej-grad 3000 --rej-mag 4000 --rej-eeg 100 --average -c "ECG063" \
-   --ecg-h-freq 25 --tstart 5
+    $mne_compute_proj_ecg.py -i protocol_run1_raw.fif --l-freq 1 --h-freq 100 \
+    --rej-grad 3000 --rej-mag 4000 --rej-eeg 100 --average -c "ECG063" \
+    --ecg-h-freq 25 --tstart 5
 
 Detects heartbeats using the channel ECG063 & computes the projections on data filtered between 1 and 100Hz & saves 2 files:
 The events in (you should look at them in mne_browse_raw)
@@ -516,25 +555,10 @@ This will save *protocol_run1_raw_eog-eve.fif* containing the events and
 
 ----
 
-New Features in Upcoming 0.5 Release
-------------------------------------
-
-- Artifact removal using ICA
-- Pairwise connectivity analysis (sensor and source space)
-- More efficient and user-friendly cluster-level statistics
-- Mutli-taper PSD estimation
-- Improved and new plotting functions, e.g., time-frequency topographies
-- Export Raw, Epochs, and Evoked to nitime_
-- ..tons of other improvements
-
-.. _nitime: http://nipy.sourceforge.net/nitime
-
-----
-
 Some links
 ----------
 
-Doc:
+Documentation:
 
 - http://martinos.org/mne/ (general doc)
 - http://martinos.org/mne/python_tutorial.html (python tutorial)
