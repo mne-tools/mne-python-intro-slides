@@ -2,12 +2,8 @@
 
    <img width="800" class="titleimg" src="images/logo_transp_bg.png"/>
    <span class="mytitle">MNE-Python: MNE with Python</span>
-   <span class="authors">
-    Alexandre Gramfort, Martin Luessi, Dan G. Wakeman,<br>
-    Matti S. H&auml;m&auml;l&auml;inen
-   </span>
 
-Neuroinformatics 2012, MBL, August 16, 2012
+MNE website: http://martinos.org/mne
 
 Link to these slides: http://mne-tools.github.com/mne-python-intro-slides
 
@@ -16,27 +12,27 @@ Link to these slides: http://mne-tools.github.com/mne-python-intro-slides
 Outline:
 --------
 
+- Why Python?
 - Design Principles
 - Status
-- Feature overview
+- Feature Overview
 - Example Usage
-- Future Plans
 
 ----
 
-.. Why use Python for MEG?
-.. -----------------------------------
-..
-.. - Python is free (as in speech)
-.. - It "combines remarkable power with very clear syntax" [1]_
-.. - Well suited for high performance numerical computing (NumPy, SciPy, ...)
-.. - High quality 2D and 3D visualizations (pylab, mlab, ...)
-.. - Increasingly popular in neuroscience (nipy, nipype, nitime, ...)
-..
-..
-.. .. [1] `<http://docs.python.org/faq/general.html#what-is-python/>`_
-..
-.. ----
+Why use Python for MEG?
+-----------------------------------
+
+- Python is an **intepreted high-level programming language**
+- Python is **free** (as in speech)
+- It "combines **remarkable power** with **very clear syntax**" [1]_
+- Well suited for **high performance numerical computing** (NumPy, SciPy, ...)
+- High quality **2D and 3D visualization** (pylab, mlab, ...)
+- Increasingly **popular in neuroscience** (nipy, nipype, nitime, ...)
+
+.. [1] `<http://docs.python.org/faq/general.html#what-is-python/>`_
+
+----
 
 MNE-Python Design Principles
 ----------------------------
@@ -45,6 +41,7 @@ MNE-Python Design Principles
 - Extend functionality of the MNE command line tools
 - Implement all features of the MNE Matlab toolbox
 - Simplicity, clean code, and good documentation
+- Computationally efficient implementation, use parallel processing
 - Permissive BSD license (allows use in commercial products)
 - Open development `<http://github.com/mne-tools/mne-python>`_
 - Do not depend on any commercial software
@@ -54,14 +51,26 @@ MNE-Python Design Principles
 MNE-Python Status
 -----------------
 
-- Current version: 0.3 (released March 23, 2012)
-- Main contributors: Alexandre Gramfort and Martin Luessi (hopefully more in the future)
-- 14535 lines of code, 6927 lines of comments
-- 82 unit tests, 81% test coverage
-- 39 examples
+- Current version: 0.4 (released August 22, 2012)
+- 19505 lines of code, 10591 lines of comments
+- 114 unit tests, 81% test coverage
+- 54 examples
 
-.. image:: images/sloc_july_2012.png
-   :scale: 120%
+.. image:: images/sloc_nov_2012.png
+   :scale: 100%
+
+----
+
+
+Main Contributors
+-----------------
+
+- Alexandre Gramfort (Telecom ParisTech, France)
+- Eric Larson (University of Washington, United States)
+- Martin Luessi (MGH Martinos Center, United States)
+- Denis Engemann (Juelich Research Centre, Germany)
+- Christian Brodbeck (New York University, United States)
+- **you**?
 
 ----
 
@@ -77,6 +86,8 @@ Preprocessing
 - Extract events from raw files
 - Compute noise covariance matrix
 - Extract epochs and compute evoked responses
+- **New in 0.5**: Artifact removal using ICA
+- **New in 0.5**: Export data (raw, epochs, evoked) to nitime and pandas
 
 ----
 
@@ -92,6 +103,7 @@ Inverse Solution
 - Efficient computation of mixed norm (MxNE) inverse solution
 - Morph source space data between subjects (using FreeSurfer registration)
 - Save source space data as .stc, .w, or .nii.gz (4D NIfTI) file
+- **New in 0.5**: Read and visualize dipole fit (.dip) files
 
 ----
 
@@ -103,6 +115,7 @@ Time-Frequency Analysis
 
 - Compute power spectral density (PSD) in sensor and source space
 - Compute induced power and phase lock in sensor and source space
+- **New in 0.5**: Spectrum estimation using multi-taper method
 
 Statistics
 ~~~~~~~~~~
@@ -111,6 +124,17 @@ Statistics
 - Non-parametric cluster statistics
 
 ----
+
+**New in 0.5**: Connectivity Estimation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- Sensor space and source space
+- Flexible configuration of seed-based or all-to-all connectivity
+- Supported measures: Coherence, Imag. Coherence, PLV, PLI, WPLI, ...
+- Computationally efficient
+
+----
+
 
 What MNE-Python Can't Do
 ------------------------
@@ -230,19 +254,19 @@ Computing Contrasts
 
 .. sourcecode:: python
 
-   import mne
+    import mne
 
-   ...
+    ...
 
-   epochs1 = mne.Epochs(raw, events, event_id1, tmin, tmax, picks=picks,
+    epochs1 = mne.Epochs(raw, events, event_id1, tmin, tmax, picks=picks,
                         baseline=(None, 0), reject=reject)
-   epochs2 = mne.Epochs(raw, events, event_id2, tmin, tmax, picks=picks,
-                        baseline=(None, 0), reject=reject)
+    epochs2 = mne.Epochs(raw, events, event_id2, tmin, tmax, picks=picks,
+                       baseline=(None, 0), reject=reject)
 
-   evoked1 = epochs1.average()
-   evoked2 = epochs2.average()
+    evoked1 = epochs1.average()
+    evoked2 = epochs2.average()
 
-   contrast = evoked1 - evoked2
+    contrast = evoked1 - evoked2
 
 - Arithmetic operations are supported for Evoked, SourceEstimate, and Covariance
 - The number of averages, degrees of freedom, etc. are used during the calculation
@@ -340,10 +364,9 @@ dSPM Inv. Sol. in Volume Source Space
     # Save result in a 4D nifti file
     src = inverse_operator['src']
     img = mne.save_stc_as_volume('mne_%s_inverse.nii.gz' % method, stc,
-            src, mri_resolution=False)  # set to True for full MRI resolution
+          src, mri_resolution=False)  # set to True for full MRI resolution
 
 ----
-
 
 dSPM Inv. Sol. on Single Epochs
 -----------------------------------
@@ -372,7 +395,8 @@ dSPM Inv. Sol. on Single Epochs
 
     # Compute inverse solution and stcs for each epoch
     stcs = apply_inverse_epochs(epochs, inverse_operator,
-                                lambda2, method, label, pick_normal=True)
+                                lambda2, method, label, pick_normal=True,
+                                return_generator=True)
 
 ----
 
@@ -466,6 +490,32 @@ Power and Phase Lock in Src. Space
 
 ----
 
+Time-Frequency Connectivity Estimation
+--------------------------------------
+
+.. sourcecode:: python
+
+    import mne
+    from mne.connectivity import spectral_connectivity
+
+    # Create epochs for left-visual condition
+    event_id, tmin, tmax = 3, -0.2, 0.5
+    epochs = mne.Epochs(raw, events, event_id, tmin, tmax, picks=picks,
+                    baseline=(None, 0), reject=dict(grad=4000e-13, eog=150e-6))
+
+    # Compute connectivity
+    indices = seed_target_indices(epochs.ch_names.index('MEG 2343'),
+                                  np.arange(len(epochs.ch_names)))
+
+    con, freqs, times, _, _ = spectral_connectivity(epochs, indices=indices,
+        method='wpli2_debiased', mode='cwt_morlet', sfreq=raw.info['sfreq'],
+        cwt_frequencies=np.arange(7, 30, 2), n_jobs=4)
+
+.. image:: images/cwt_sensor_connectivity.png
+   :scale: 40%
+
+----
+
 Computing SSPs for ECG and EOG
 --------------------------------------------------
 
@@ -473,9 +523,9 @@ First compute ECG projections with:
 
 .. sourcecode:: bash
 
-   $mne_compute_proj_ecg.py -i protocol_run1_raw.fif --l-freq 1 --h-freq 100 \
-   --rej-grad 3000 --rej-mag 4000 --rej-eeg 100 --average -c "ECG063" \
-   --ecg-h-freq 25 --tstart 5
+    $mne_compute_proj_ecg.py -i protocol_run1_raw.fif --l-freq 1 --h-freq 100 \
+    --rej-grad 3000 --rej-mag 4000 --rej-eeg 100 --average -c "ECG063" \
+    --ecg-h-freq 25 --tstart 5
 
 Detects heartbeats using the channel ECG063 & computes the projections on data filtered between 1 and 100Hz & saves 2 files:
 The events in (you should look at them in mne_browse_raw)
@@ -505,20 +555,10 @@ This will save *protocol_run1_raw_eog-eve.fif* containing the events and
 
 ----
 
-Future Plans
-------------
-
-- Noise covariance computation with automatic regularization
-- Coherence computation in sensor and source space (multi-taper method from nitime)
-- Network- and connectivity analysis
-- **Whatever you want to contribute**
-
-----
-
 Some links
 ----------
 
-Doc:
+Documentation:
 
 - http://martinos.org/mne/ (general doc)
 - http://martinos.org/mne/python_tutorial.html (python tutorial)
