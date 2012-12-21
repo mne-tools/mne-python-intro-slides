@@ -65,7 +65,7 @@ MNE-Python Status
 Main Contributors
 -----------------
 
-- Alexandre Gramfort (Telecom ParisTech, France)
+- Alexandre Gramfort (Telecom ParisTech, CEA/Neurospin, France)
 - Eric Larson (University of Washington, United States)
 - Martin Luessi (MGH Martinos Center, United States)
 - Denis Engemann (Juelich Research Centre, Germany)
@@ -161,7 +161,7 @@ Reading and Plotting Raw Data
 
     picks = mne.fiff.pick_types(raw.info, meg='mag')
     some_picks = picks[:5]  # take 5 first
-    start, stop = raw.time_to_index(0, 15)  # read the first 15s of data
+    start, stop = raw.time_as_index([0, 15])  # read the first 15s of data
     data, times = raw[some_picks, start:(stop + 1)]
 
     pl.plot(times, data.T)
@@ -242,9 +242,9 @@ Evoked Response and Noise Cov.
     # compute evoked response and noise covariance
     evoked = epochs.average()
     cov = mne.compute_covariance(epochs, tmax=0)
-
     # save them
-    evoked.save('event_%d-evoked.fif' % event_id)
+    epochs.save('event_%d-epo.fif' % event_id)
+    evoked.save('event_%d-ave.fif' % event_id)
     cov.save('event_%d-cov.fif' % event_id)
 
 ----
@@ -281,11 +281,10 @@ Plot Evoked Response
 .. sourcecode:: python
 
    import mne
-   from mne.viz import plot_evoked
 
-   evoked = mne.fiff.Evoked('event_1-evoked.fif')
+   evoked = mne.fiff.Evoked('event_1-ave.fif')
 
-   plot_evoked(evoked)
+   evoked.plot()
 
 
 .. image:: images/plot_evoked.png
@@ -320,7 +319,7 @@ dSPM Inverse Solution
     import mne
 
     # load data
-    evoked = mne.fiff.Evoked('event_1-evoked.fif')
+    evoked = mne.fiff.Evoked('event_1-ave.fif')
     cov = mne.read_cov('event_1-cov.fif')
 
     # compute inverse operator
@@ -379,7 +378,6 @@ dSPM Inv. Sol. on Single Epochs
     event_id, tmin, tmax = 1, -0.2, 0.5
     snr = 1.0
     lambda2 = 1.0 / snr ** 2
-    method = 'dSPM'
 
     # Load data
     inverse_operator = mne.minimum_norm.read_inverse_operator(fname_inv)
@@ -387,16 +385,16 @@ dSPM Inv. Sol. on Single Epochs
     raw = mne.fiff.Raw(fname_raw)
     events = mne.read_events(fname_event)
 
-    picks = mne.fiff.pick_types(raw.info, meg=True, eeg=False, stim=False, eog=True)
+    picks = mne.fiff.pick_types(raw.info, meg=True, eeg=False, stim=False,
+                                eog=True)
 
     epochs = mne.Epochs(raw, events, event_id, tmin, tmax, picks=picks,
                         baseline=(None, 0),
                         reject=dict(mag=4e-12, grad=4000e-13, eog=150e-6))
 
     # Compute inverse solution and stcs for each epoch
-    stcs = apply_inverse_epochs(epochs, inverse_operator,
-                                lambda2, method, label, pick_normal=True,
-                                return_generator=True)
+    stcs = apply_inverse_epochs(epochs, inverse_operator, lambda2, 'dSPM',
+                                label, pick_normal=True, return_generator=True)
 
 ----
 
@@ -413,8 +411,7 @@ LCMV Beamformer Solution
     # Use only left-temporal channels
     left_temporal_channels = mne.read_selection('Left-temporal')
     picks = pick_types(raw.info, meg=True, eeg=False, stim=True, eog=True,
-                       exclude=raw.info['bads'],
-                       selection=left_temporal_channels)
+               exclude=raw.info['bads'], selection=left_temporal_channels)
 
     # Compute evoked response, noise- and data covariance matrices
     epochs = mne.Epochs(raw, events, event_id, tmin, tmax, proj=True,
@@ -441,17 +438,14 @@ Mixed norm (MxNE) Inverse Solution
 
     from mne.mixed_norm import mixed_norm
     from mne.minimum_norm import make_inverse_operator, apply_inverse
-    ...
-
+    # Read what's necessary ...
     alpha = 70  # regularization parameter between 0 and 100 (100 is high)
     loose, depth = 0.2, 0.9  # loose orientation & depth weighting
-
     # Compute dSPM solution to be used as weights in MxNE
     inverse_operator = make_inverse_operator(evoked.info, forward, cov,
                                              loose=loose, depth=depth)
     stc_dspm = apply_inverse(evoked, inverse_operator, lambda2=1. / 9.,
                              method='dSPM')
-
     # Compute MxNE inverse solution
     stc = mixed_norm(evoked, forward, cov, alpha, loose=loose,
                      depth=depth, maxit=3000, tol=1e-4, active_set_size=10,
@@ -502,11 +496,9 @@ Time-Frequency Connectivity Estimation
     event_id, tmin, tmax = 3, -0.2, 0.5
     epochs = mne.Epochs(raw, events, event_id, tmin, tmax, picks=picks,
                     baseline=(None, 0), reject=dict(grad=4000e-13, eog=150e-6))
-
     # Compute connectivity
     indices = seed_target_indices(epochs.ch_names.index('MEG 2343'),
                                   np.arange(len(epochs.ch_names)))
-
     con, freqs, times, _, _ = spectral_connectivity(epochs, indices=indices,
         method='wpli2_debiased', mode='cwt_morlet', sfreq=raw.info['sfreq'],
         cwt_frequencies=np.arange(7, 30, 2), n_jobs=4)
