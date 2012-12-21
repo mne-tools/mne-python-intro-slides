@@ -51,7 +51,7 @@ MNE-Python Design Principles
 MNE-Python Status
 -----------------
 
-- Current version: 0.4 (released August 22, 2012)
+- Current version: 0.5 (released December 22, 2012)
 - 19505 lines of code, 10591 lines of comments
 - 114 unit tests, 81% test coverage
 - 54 examples
@@ -86,8 +86,10 @@ Preprocessing
 - Extract events from raw files
 - Compute noise covariance matrix
 - Extract epochs and compute evoked responses
-- **New in 0.5**: Artifact removal using ICA
+- **New in 0.5**: images plotting functions to reveal cross-trial dynamics
+- **New in 0.5**: EpochsArtifact removal and feature selection using ICA
 - **New in 0.5**: Export data (raw, epochs, evoked) to nitime and pandas
+
 
 ----
 
@@ -116,6 +118,7 @@ Time-Frequency Analysis
 - Compute power spectral density (PSD) in sensor and source space
 - Compute induced power and phase lock in sensor and source space
 - **New in 0.5**: Spectrum estimation using multi-taper method
+- **New in 0.5**: Sensor topography plot for time-frequency images.
 
 Statistics
 ~~~~~~~~~~
@@ -135,6 +138,29 @@ Statistics
 
 ----
 
+**New in 0.5**: ICA
+~~~~~~~~~~~~~~~~~~~
+
+- Decompose raw and epochs MEG and EEG data
+- Extract and visualize sources
+- Automatically identify sources using scipy distance metrics, correlation
+  or custom functions
+- Export sources to raw object to apply mne-python sensor-space techniques
+  in ICA space or to browse sources using ``mne_brows_raw``
+- Efficient: decompose once, then save the ICA to later update the selection
+
+----
+
+
+**New in 0.5**: Embedded exporters
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- use ``.as_data_frame`` method to export raw, epochs and evoked data to
+  the Pandas data analysis library
+- use ``.to_nitime`` method to export raw, epochs and evoked data to
+  the NiTime time series library
+
+----
 
 What MNE-Python Can't Do
 ------------------------
@@ -276,7 +302,7 @@ Computing Contrasts
 ----
 
 Plot Evoked Response
-------------------------
+--------------------
 
 .. sourcecode:: python
 
@@ -290,6 +316,63 @@ Plot Evoked Response
 .. image:: images/plot_evoked.png
       :scale: 70%
 
+----
+
+Handle Conditions Using Epochs
+------------------------------
+
+.. sourcecode:: python
+	
+   import mne
+   
+   ...
+       
+   epochs = mne.Epochs(raw, events, dict(aud_l=1, vis_l=3), tmin, tmax,
+                       picks=picks, baseline=(None, 0), reject=reject)
+   					
+   evokeds = [epochs[cond].average() for cond in 'aud_l', 'vis_r']
+   
+   layout = read_layout('Vectorview-all.lout')
+   title = 'MNE sample data - left auditory and visual'
+   mne.viz.plot_topo(evokeds, layout, color=['y', 'g'], title=title)
+
+
+.. image:: images/plot_topo_conditions_example.png
+	   :scale: 44%
+	
+----
+
+Automatically Find Artifacts Using ICA
+--------------------------------------
+
+.. sourcecode:: python
+   
+   import mne
+   
+   ...
+   
+   ica = ICA(n_components=0.90, max_n_components=100)
+   
+   ica.decompose_raw(raw, start=start, stop=stop, picks=picks)
+       
+   # identify ECG component and generate sort-index
+   ecg_scores = ica.find_sources_raw(raw, target='MEG 1531',
+                                     score_func='pearsonr')
+   
+   start_plot, stop_plot = raw.time_as_index([100, 103])
+   order = np.abs(ecg_scores).argsort()[::-1]
+   ica.plot_sources_raw(raw, order=order, start=start_plot, stop=stop_plot)
+  
+   # remove 1 component and transform to sensor space 
+   raw_cleaned = ica.pick_sources_raw(raw,
+                     exclude=[np.abs(ecg_scroes).argmax()])
+
+   # ICA I/O
+   ica_raw = ica.export_sources(raw)  # ICA-space raw data object 
+   
+   ica.save('my_ica.fif')  # restore: mne.preprocessing.read_ica('my_ica.fif')
+   
+	
 ----
 
 Visualizing the Noise Covariance
@@ -559,5 +642,5 @@ Documentation:
 Code:
 
 - https://github.com/mne-tools/mne-python (mne-python code)
-- https://github.com/mne-tools/mne-scripts (mne shell scripts)
 - https://github.com/mne-tools/mne-matlab (mne matlab toolbox)
+- https://github.com/mne-tools/mne-scripts (mne shell scripts)
