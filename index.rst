@@ -106,6 +106,7 @@ Inverse Solution
 - Morph source space data between subjects (using FreeSurfer registration)
 - Save source space data as .stc, .w, or .nii.gz (4D NIfTI) file
 - **New in 0.5**: Read and visualize dipole fit (.dip) files
+- **New in 0.5**: visualization of source estimates
 
 ----
 
@@ -148,6 +149,9 @@ Statistics
 - Export sources to raw object to apply mne-python sensor-space techniques
   in ICA space or to browse sources using ``mne_brows_raw``
 - Efficient: decompose once, then save the ICA to later update the selection
+- Flexible: Undo PCA dimensionality reduction to the extend desired after ICA. 
+  On back-transforming to sensor-space you can choose how many removed PCA
+  components to add back. 
 
 ----
 
@@ -167,12 +171,6 @@ What MNE-Python Can't Do
 
 - Forward modeling (use MNE command line tools)
 - Raw data visualization (use ``mne_browse_raw``)
-- Interactive visualization of source estimates (use ``mne_analyze``) [#f1]_
-
-.. [#f1] Can be done with `PySurfer <http://pysurfer.github.com>`_
-
-.. image:: images/pysurfer.png
-   :scale: 40%
 
 ----
 
@@ -186,9 +184,8 @@ Reading and Plotting Raw Data
     raw = mne.fiff.Raw(fname)
 
     picks = mne.fiff.pick_types(raw.info, meg='mag')
-    some_picks = picks[:5]  # take 5 first
     start, stop = raw.time_as_index([0, 15])  # read the first 15s of data
-    data, times = raw[some_picks, start:(stop + 1)]
+    data, times = raw[picks[:5], start:(stop + 1)]  # take 5 first channels
 
     pl.plot(times, data.T)
     pl.xlabel('time (s)')
@@ -229,10 +226,9 @@ PSD of Raw Data
 .. sourcecode:: python
 
     from mne.time_frequency import compute_raw_psd
+
     raw = mne.fiff.Raw(raw_fname)
-
     picks = mne.fiff.pick_types(raw.info, meg='grad')  # picks MEG gradiometers
-
     tmin, tmax = 0, 60  # use the first 60s of data
     fmin, fmax = 0, 300  # look at frequencies between 0 and 300Hz
     NFFT = 2048 # the FFT size (NFFT). Ideally a power of 2
@@ -325,15 +321,13 @@ Handle Conditions Using Epochs
 	
    import mne
    
-   ...
+   ... # read raw data, set title, read layout
        
    epochs = mne.Epochs(raw, events, dict(aud_l=1, vis_l=3), tmin, tmax,
                        picks=picks, baseline=(None, 0), reject=reject)
    					
    evokeds = [epochs[cond].average() for cond in 'aud_l', 'vis_r']
    
-   layout = read_layout('Vectorview-all.lout')
-   title = 'MNE sample data - left auditory and visual'
    mne.viz.plot_topo(evokeds, layout, color=['y', 'g'], title=title)
 
 
@@ -367,9 +361,7 @@ Automatically Find Artifacts Using ICA
    raw_cleaned = ica.pick_sources_raw(raw,
                      exclude=[np.abs(ecg_scroes).argmax()])
 
-   # ICA I/O
-   ica_raw = ica.export_sources(raw)  # ICA-space raw data object 
-   
+   ica_raw = ica.export_sources(raw)  # ICA-space raw data object    
    ica.save('my_ica.fif')  # restore: mne.preprocessing.read_ica('my_ica.fif')
    
 	
@@ -467,7 +459,6 @@ dSPM Inv. Sol. on Single Epochs
     label = mne.read_label(fname_label)
     raw = mne.fiff.Raw(fname_raw)
     events = mne.read_events(fname_event)
-
     picks = mne.fiff.pick_types(raw.info, meg=True, eeg=False, stim=False,
                                 eog=True)
 
@@ -503,9 +494,7 @@ LCMV Beamformer Solution
     evoked = epochs.average()
 
     forward = mne.read_forward_solution(fname_fwd)
-
-    noise_cov = mne.read_cov(fname_cov)
-    noise_cov = mne.cov.regularize(noise_cov, evoked.info,
+    noise_cov = mne.cov.regularize(mne.read_cov(fname_cov), evoked.info,
                                    mag=0.05, grad=0.05, eeg=0.1, proj=True)
     data_cov = mne.compute_covariance(epochs, tmin=0.04, tmax=0.15)
 
@@ -524,12 +513,11 @@ Mixed norm (MxNE) Inverse Solution
     # Read what's necessary ...
     alpha = 70  # regularization parameter between 0 and 100 (100 is high)
     loose, depth = 0.2, 0.9  # loose orientation & depth weighting
-    # Compute dSPM solution to be used as weights in MxNE
+    # First compute dSPM solution to be used as weights in MxNE, then MxNE
     inverse_operator = make_inverse_operator(evoked.info, forward, cov,
                                              loose=loose, depth=depth)
     stc_dspm = apply_inverse(evoked, inverse_operator, lambda2=1. / 9.,
                              method='dSPM')
-    # Compute MxNE inverse solution
     stc = mixed_norm(evoked, forward, cov, alpha, loose=loose,
                      depth=depth, maxit=3000, tol=1e-4, active_set_size=10,
                      debias=True, weights=stc_dspm, weights_min=8.)
@@ -548,9 +536,7 @@ Power and Phase Lock in Src. Space
     import mne
     from mne.minimum_norm import read_inverse_operator, source_induced_power
 
-    tmin, tmax, event_id = -0.2, 0.5, 1
-
-    ...  # read raw etc.
+    ...  # read raw, set event_id, tmin and tmax
 
     epochs = mne.Epochs(raw, events, event_id, tmin, tmax, picks=picks,
                 baseline=(None, 0), reject=dict(grad=4000e-13, eog=150e-6),
@@ -575,8 +561,7 @@ Time-Frequency Connectivity Estimation
     import mne
     from mne.connectivity import spectral_connectivity
 
-    # Create epochs for left-visual condition
-    event_id, tmin, tmax = 3, -0.2, 0.5
+    ...  # read raw, Create epochs for left-visual condition
     epochs = mne.Epochs(raw, events, event_id, tmin, tmax, picks=picks,
                     baseline=(None, 0), reject=dict(grad=4000e-13, eog=150e-6))
     # Compute connectivity
