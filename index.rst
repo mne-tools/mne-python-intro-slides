@@ -87,7 +87,7 @@ Preprocessing
 - Compute noise covariance matrix
 - Extract epochs and compute evoked responses
 - **New in 0.5**: images plotting functions to reveal cross-trial dynamics
-- **New in 0.5**: EpochsArtifact removal and feature selection using ICA
+- **New in 0.5**: Artifact removal and feature selection using ICA
 - **New in 0.5**: Export data (raw, epochs, evoked) to nitime and pandas
 
 
