@@ -87,7 +87,7 @@ Preprocessing
 - Compute noise covariance matrix
 - Extract epochs and compute evoked responses
 - **New in 0.5**: images plotting functions to reveal cross-trial dynamics
-- **New in 0.5**: EpochsArtifact removal and feature selection using ICA
+- **New in 0.5**: Artifact removal and feature selection using ICA
 - **New in 0.5**: Export data (raw, epochs, evoked) to nitime and pandas
 
 
@@ -361,7 +361,7 @@ Automatically Find Artifacts Using ICA
    raw_cleaned = ica.pick_sources_raw(raw,
                      exclude=[np.abs(ecg_scroes).argmax()])
 
-   ica_raw = ica.export_sources(raw)  # ICA-space raw data object    
+   ica_raw = ica.sources_as_raw(raw)  # ICA-space raw data object    
    ica.save('my_ica.fif')  # restore: mne.preprocessing.read_ica('my_ica.fif')
    
 	
