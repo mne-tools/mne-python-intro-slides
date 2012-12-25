@@ -1525,7 +1525,7 @@ div.slide div.presenter_notes {
 <li>Compute noise covariance matrix</li>
 <li>Extract epochs and compute evoked responses</li>
 <li><strong>New in 0.5</strong>: images plotting functions to reveal cross-trial dynamics</li>
-<li><strong>New in 0.5</strong>: EpochsArtifact removal and feature selection using ICA</li>
+<li><strong>New in 0.5</strong>: Artifact removal and feature selection using ICA</li>
 <li><strong>New in 0.5</strong>: Export data (raw, epochs, evoked) to nitime and pandas</li>
 </ul></section>
             
@@ -2110,7 +2110,7 @@ the NiTime time series library</li>
 <span class="n">raw_cleaned</span> <span class="o">=</span> <span class="n">ica</span><span class="o">.</span><span class="n">pick_sources_raw</span><span class="p">(</span><span class="n">raw</span><span class="p">,</span>
                   <span class="n">exclude</span><span class="o">=</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">ecg_scroes</span><span class="p">)</span><span class="o">.</span><span class="n">argmax</span><span class="p">()])</span>
 
-<span class="n">ica_raw</span> <span class="o">=</span> <span class="n">ica</span><span class="o">.</span><span class="n">export_sources</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span>  <span class="c"># ICA-space raw data object</span>
+<span class="n">ica_raw</span> <span class="o">=</span> <span class="n">ica</span><span class="o">.</span><span class="n">sources_as_raw</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span>  <span class="c"># ICA-space raw data object</span>
 <span class="n">ica</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s">&#39;my_ica.fif&#39;</span><span class="p">)</span>  <span class="c"># restore: mne.preprocessing.read_ica(&#39;my_ica.fif&#39;)</span>
 </pre></section>
             
