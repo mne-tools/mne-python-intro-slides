@@ -361,7 +361,7 @@ Automatically Find Artifacts Using ICA
    raw_cleaned = ica.pick_sources_raw(raw,
                      exclude=[np.abs(ecg_scroes).argmax()])
 
-   ica_raw = ica.export_sources(raw)  # ICA-space raw data object    
+   ica_raw = ica.sources_as_raw(raw)  # ICA-space raw data object    
    ica.save('my_ica.fif')  # restore: mne.preprocessing.read_ica('my_ica.fif')
    
 	
