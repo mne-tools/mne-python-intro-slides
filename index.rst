@@ -345,7 +345,7 @@ Automatically Find Artifacts Using ICA
    
    ...
    
-   ica = ICA(n_components=0.90, max_n_components=100)
+   ica = ICA(n_components=0.90, max_pca_components=100)
    
    ica.decompose_raw(raw, start=start, stop=stop, picks=picks)
        
