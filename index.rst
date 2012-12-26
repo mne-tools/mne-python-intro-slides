@@ -51,12 +51,13 @@ MNE-Python Design Principles
 MNE-Python Status
 -----------------
 
-- Current version: 0.5 (released December 22, 2012)
-- 19505 lines of code, 10591 lines of comments
-- 114 unit tests, 81% test coverage
-- 54 examples
+- Current version: 0.5 (released December 26, 2012)
+- 23492 lines of code, 12533 lines of comments
+- 141 unit tests, 82% test coverage
+- 62 examples
 
-.. image:: images/sloc_nov_2012.png
+
+.. image:: images/sloc_dec_2012.png
    :scale: 100%
 
 ----
@@ -345,7 +346,7 @@ Automatically Find Artifacts Using ICA
    
    ...
    
-   ica = ICA(n_components=0.90, max_n_components=100)
+   ica = ICA(n_components=0.90, max_pca_components=100)
    
    ica.decompose_raw(raw, start=start, stop=stop, picks=picks)
        
