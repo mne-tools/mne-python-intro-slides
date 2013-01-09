@@ -71,6 +71,8 @@ Main Contributors
 - Martin Luessi (MGH Martinos Center, United States)
 - Denis Engemann (Juelich Research Centre, Germany)
 - Christian Brodbeck (New York University, United States)
+- Daniel Strohmeier (Ilmenau University of Technology, Ilmenau, Germany)
+- Matti Hamalainen (MGH Martinos Center, United States)
 - **you**?
 
 ----
