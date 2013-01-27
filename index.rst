@@ -37,7 +37,7 @@ Why use Python for MEG?
 MNE-Python Design Principles
 ----------------------------
 
-- Provide a powerful but easy-to-use scripting interface (no GUI)
+- Provide a powerful but easy-to-use scripting interface (no GUI yet)
 - Extend functionality of the MNE command line tools
 - Implement all features of the MNE Matlab toolbox
 - Simplicity, clean code, and good documentation
@@ -150,7 +150,7 @@ Statistics
 - Automatically identify sources using scipy distance metrics, correlation
   or custom functions
 - Export sources to raw object to apply mne-python sensor-space techniques
-  in ICA space or to browse sources using ``mne_brows_raw``
+  in ICA space or to browse sources using ``mne_browse_raw``
 - Efficient: decompose once, then save the ICA to later update the selection
 - Flexible: Undo PCA dimensionality reduction to the extend desired after ICA. 
   On back-transforming to sensor-space you can choose how many removed PCA
