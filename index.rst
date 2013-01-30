@@ -152,9 +152,9 @@ Statistics
 - Export sources to raw object to apply mne-python sensor-space techniques
   in ICA space or to browse sources using ``mne_browse_raw``
 - Efficient: decompose once, then save the ICA to later update the selection
-- Flexible: Undo PCA dimensionality reduction to the extend desired after ICA. 
+- Flexible: Undo PCA dimensionality reduction to the extend desired after ICA.
   On back-transforming to sensor-space you can choose how many removed PCA
-  components to add back. 
+  components to add back.
 
 ----
 
@@ -321,53 +321,54 @@ Handle Conditions Using Epochs
 ------------------------------
 
 .. sourcecode:: python
-	
+
    import mne
-   
-   ... # read raw data, set title, read layout
-       
+
+   ... # read raw data, set title
+
    epochs = mne.Epochs(raw, events, dict(aud_l=1, vis_l=3), tmin, tmax,
                        picks=picks, baseline=(None, 0), reject=reject)
-   					
+
    evokeds = [epochs[cond].average() for cond in 'aud_l', 'vis_r']
-   
+
+   layout = mne.layouts.read_layout('Vectorview-all.lout')
    mne.viz.plot_topo(evokeds, layout, color=['y', 'g'], title=title)
 
 
 .. image:: images/plot_topo_conditions_example.png
 	   :scale: 44%
-	
+
 ----
 
 Automatically Find Artifacts Using ICA
 --------------------------------------
 
 .. sourcecode:: python
-   
+
    import mne
-   
+
    ...
-   
+
    ica = ICA(n_components=0.90, max_pca_components=100)
-   
+
    ica.decompose_raw(raw, start=start, stop=stop, picks=picks)
-       
+
    # identify ECG component and generate sort-index
    ecg_scores = ica.find_sources_raw(raw, target='MEG 1531',
                                      score_func='pearsonr')
-   
+
    start_plot, stop_plot = raw.time_as_index([100, 103])
    order = np.abs(ecg_scores).argsort()[::-1]
    ica.plot_sources_raw(raw, order=order, start=start_plot, stop=stop_plot)
-  
-   # remove 1 component and transform to sensor space 
+
+   # remove 1 component and transform to sensor space
    raw_cleaned = ica.pick_sources_raw(raw,
                      exclude=[np.abs(ecg_scroes).argmax()])
 
-   ica_raw = ica.sources_as_raw(raw)  # ICA-space raw data object    
+   ica_raw = ica.sources_as_raw(raw)  # ICA-space raw data object
    ica.save('my_ica.fif')  # restore: mne.preprocessing.read_ica('my_ica.fif')
-   
-	
+
+
 ----
 
 Visualizing the Noise Covariance
