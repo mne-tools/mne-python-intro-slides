@@ -51,7 +51,7 @@ MNE-Python Design Principles
 MNE-Python Status
 -----------------
 
-- Current version: 0.5 (released December 26, 2012)
+- Current version: 0.7 (released Novemebr 24, 2013)
 - 23492 lines of code, 12533 lines of comments
 - 141 unit tests, 82% test coverage
 - 62 examples
@@ -72,6 +72,9 @@ Main Contributors
 - Denis Engemann (Juelich Research Centre, Germany)
 - Christian Brodbeck (New York University, United States)
 - Daniel Strohmeier (Ilmenau University of Technology, Ilmenau, Germany)
+- Mainak Jas (Aalto University School of Science, Espoo, Finland)
+- Roman Goj (University of Stirling, UK)
+- Teon Brooks (New York University, United States)
 - Matti Hamalainen (MGH Martinos Center, United States)
 - **you**?
 
@@ -89,10 +92,9 @@ Preprocessing
 - Extract events from raw files
 - Compute noise covariance matrix
 - Extract epochs and compute evoked responses
-- **New in 0.5**: images plotting functions to reveal cross-trial dynamics
-- **New in 0.5**: Artifact removal and feature selection using ICA
-- **New in 0.5**: Export data (raw, epochs, evoked) to nitime and pandas
-
+- Artifact removal and feature selection using ICA
+- Export data (raw, epochs, evoked) to nitime and pandas
+- **New in 0.7** visualize single trials
 
 ----
 
@@ -105,11 +107,13 @@ Inverse Solution
 - Compute MNE/dSPM/sLORETA inverse operators
 - Compute inverse solution for evoked, epochs and raw data
 - Compute Linearly-Constrained Minimum Variance (LCMV) beamformer solution
+- Compute Dynamic Imaging of Coherent Sources (DICS) beamformer solution
 - Efficient computation of mixed norm (MxNE) inverse solution
 - Morph source space data between subjects (using FreeSurfer registration)
 - Save source space data as .stc, .w, or .nii.gz (4D NIfTI) file
-- **New in 0.5**: Read and visualize dipole fit (.dip) files
-- **New in 0.5**: visualization of source estimates
+- Read and visualize dipole fit (.dip) files
+- visualization of source estimates
+- **New in 0.7** compute forward solution 
 
 ----
 
@@ -121,18 +125,19 @@ Time-Frequency Analysis
 
 - Compute power spectral density (PSD) in sensor and source space
 - Compute induced power and phase lock in sensor and source space
-- **New in 0.5**: Spectrum estimation using multi-taper method
-- **New in 0.5**: Sensor topography plot for time-frequency images.
+- Spectrum estimation using multi-taper method
+- Sensor topography plot for time-frequency images.
+- **New in 0.7** plot raw and single trial power spectra
 
 Statistics
 ~~~~~~~~~~
 
-- F test, permutation T test
+- F test, permutation T test, repeated measures ANOVA
 - Non-parametric cluster statistics
 
 ----
 
-**New in 0.5**: Connectivity Estimation
+Connectivity Estimation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 - Sensor space and source space
@@ -142,7 +147,7 @@ Statistics
 
 ----
 
-**New in 0.5**: ICA
+ICA
 ~~~~~~~~~~~~~~~~~~~
 
 - Decompose raw and epochs MEG and EEG data
@@ -151,29 +156,27 @@ Statistics
   or custom functions
 - Export sources to raw object to apply mne-python sensor-space techniques
   in ICA space or to browse sources using ``mne_browse_raw``
-- Efficient: decompose once, then save the ICA to later update the selection
-- Flexible: Undo PCA dimensionality reduction to the extend desired after ICA.
-  On back-transforming to sensor-space you can choose how many removed PCA
-  components to add back.
+- Efficient: speed and memory optimized, exclude non-stationary segments from 
+  fit
+- Persistence: decompose once, then save the ICA to later update the selection
 
 ----
 
 
-**New in 0.5**: Embedded exporters
+Embedded exporters
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 - use ``.as_data_frame`` method to export raw, epochs and evoked data to
   the Pandas data analysis library
-- use ``.to_nitime`` method to export raw, epochs and evoked data to
-  the NiTime time series library
+- use ``.to_nitime`` method to export raw, epochs, evoked and source estimates 
+  data to the NiTime time series library
 
 ----
 
 What MNE-Python Can't Do
 ------------------------
 
-- Forward modeling (use MNE command line tools)
-- Raw data visualization (use ``mne_browse_raw``)
+- Dipole fitting (use MNE command line tools)
 
 ----
 
@@ -190,9 +193,7 @@ Reading and Plotting Raw Data
     start, stop = raw.time_as_index([0, 15])  # read the first 15s of data
     data, times = raw[picks[:5], start:(stop + 1)]  # take 5 first channels
 
-    pl.plot(times, data.T)
-    pl.xlabel('time (s)')
-    pl.ylabel('MEG data (T)')
+    raw.plot()
 
 .. image:: images/raw_data.png
    :scale: 45%
@@ -234,10 +235,9 @@ PSD of Raw Data
     picks = mne.fiff.pick_types(raw.info, meg='grad')  # picks MEG gradiometers
     tmin, tmax = 0, 60  # use the first 60s of data
     fmin, fmax = 0, 300  # look at frequencies between 0 and 300Hz
-    NFFT = 2048 # the FFT size (NFFT). Ideally a power of 2
-    psds, freqs = compute_raw_psd(raw, tmin=tmin, tmax=tmax, picks=picks,
-                                  fmin=fmin, fmax=fmax, NFFT=NFFT, n_jobs=4)
-
+    n_fft = 2048 # the FFT size (NFFT). Ideally a power of 2
+    raw.plot_psds(tmin=tmin, tmax=tmax, fmin=fmin, fmax=fmax, n_fft=n_fft,
+                  picks=picks, n_jobs=1)
 
 .. image:: images/mt_psd.png
    :scale: 50%
@@ -587,7 +587,7 @@ First compute ECG projections with:
 
 .. sourcecode:: bash
 
-    $mne_compute_proj_ecg.py -i protocol_run1_raw.fif --l-freq 1 --h-freq 100 \
+    $mne compute_proj_ecg -i protocol_run1_raw.fif --l-freq 1 --h-freq 100 \
     --rej-grad 3000 --rej-mag 4000 --rej-eeg 100 --average -c "ECG063" \
     --ecg-h-freq 25 --tstart 5
 
@@ -604,13 +604,13 @@ For general help on the command:
 
 .. sourcecode:: bash
 
-    $mne_compute_proj_ecg.py -h
+    $mne compute_proj_ecg.py -h
 
 For EOG now:
 
 .. sourcecode:: bash
 
-    $mne_compute_proj_eog.py -i protocol_run1_raw.fif --l-freq 1 --h-freq 35 \
+    $mne compute_proj_eog -i protocol_run1_raw.fif --l-freq 1 --h-freq 35 \
     --rej-grad 3000 --rej-mag 4000 --rej-eeg 100 \
     --proj protocol_run1_raw_ecg_avg_proj.fif –average
 
