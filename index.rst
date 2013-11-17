@@ -51,13 +51,13 @@ MNE-Python Design Principles
 MNE-Python Status
 -----------------
 
-- Current version: 0.7 (released Novemebr 24, 2013)
-- 23492 lines of code, 12533 lines of comments
-- 141 unit tests, 82% test coverage
-- 62 examples
+- Current version: 0.7 (released Novemeber 24, 2013)
+- 41092 lines of code, 21726 lines of comments
+- 278 unit tests, 85% test coverage
+- 92 examples
 
 
-.. image:: images/sloc_dec_2012.png
+.. image:: images/sloc_nov_2013.png
    :scale: 100%
 
 ----
@@ -185,13 +185,9 @@ Reading and Plotting Raw Data
 
 .. sourcecode:: python
 
-    import pylab as pl
     import mne
-    raw = mne.fiff.Raw(fname)
 
-    picks = mne.fiff.pick_types(raw.info, meg='mag')
-    start, stop = raw.time_as_index([0, 15])  # read the first 15s of data
-    data, times = raw[picks[:5], start:(stop + 1)]  # take 5 first channels
+    raw = mne.fiff.Raw(fname)
 
     raw.plot()
 
@@ -232,13 +228,9 @@ PSD of Raw Data
     from mne.time_frequency import compute_raw_psd
 
     raw = mne.fiff.Raw(raw_fname)
-    picks = mne.fiff.pick_types(raw.info, meg='grad')  # picks MEG gradiometers
-    tmin, tmax = 0, 60  # use the first 60s of data
-    fmin, fmax = 0, 300  # look at frequencies between 0 and 300Hz
-    n_fft = 2048 # the FFT size (NFFT). Ideally a power of 2
-    raw.plot_psds(tmin=tmin, tmax=tmax, fmin=fmin, fmax=fmax, n_fft=n_fft,
-                  picks=picks, n_jobs=1)
 
+    raw.plot_psds(area_mode='range', tmax=10.0)
+    
 .. image:: images/mt_psd.png
    :scale: 50%
 
@@ -305,10 +297,10 @@ Plot Evoked Response
 
 .. sourcecode:: python
 
-   import mne
+   from mne.fiff import read_evoked
 
-   evoked = mne.fiff.Evoked('event_1-ave.fif')
-
+   evoked = read_evoked('sample_audvis-ave.fif', setno=1,
+                        baseline=(0, None))
    evoked.plot()
 
 
@@ -329,11 +321,10 @@ Handle Conditions Using Epochs
    epochs = mne.Epochs(raw, events, dict(aud_l=1, vis_l=3), tmin, tmax,
                        picks=picks, baseline=(None, 0), reject=reject)
 
-   evokeds = [epochs[cond].average() for cond in 'aud_l', 'vis_r']
+   evokeds = [epochs[name].average() for name in 'aud_l', 'vis_l']
+   title = 'MNE sample data - left auditory and visual'
 
-   layout = mne.layouts.read_layout('Vectorview-all.lout')
-   mne.viz.plot_topo(evokeds, layout, color=['y', 'g'], title=title)
-
+   plot_topo(evokeds, color=('yellow', 'green'), title=title)
 
 .. image:: images/plot_topo_conditions_example.png
 	   :scale: 44%
@@ -619,8 +610,12 @@ This will save *protocol_run1_raw_eog-eve.fif* containing the events and
 
 ----
 
-Some links
+References
 ----------
+
+Citation:
+
+\A. Gramfort, M. Luessi, E. Larson, D. Engemann, D. Strohmeier, C. Brodbeck, L. Parkkonen, M. Hämäläinen, `MNE software for processing MEG and EEG data <http://www.ncbi.nlm.nih.gov/pubmed/24161808>`_, NeuroImage, 2013, ISSN 1053-8119, `[DOI] <http://dx.doi.org/10.1016/j.neuroimage.2013.10.027>`_
 
 Documentation:
 
