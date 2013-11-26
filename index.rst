@@ -83,8 +83,8 @@ Main Contributors
 Key Features
 ------------
 
-Preprocessing
-~~~~~~~~~~~~~
+Preprocessing and IO
+~~~~~~~~~~~~~~~~~~~~
 
 - Filtering of raw files
 - Detect ECG and EOG events (for SSP)
@@ -94,6 +94,8 @@ Preprocessing
 - Extract epochs and compute evoked responses
 - Artifact removal and feature selection using ICA
 - Export data (raw, epochs, evoked) to nitime and pandas
+- **New in 0.7** import EEG data (BrainVision, EDF+, BDF)
+- **New in 0.7** GUI for MEG/MRI coregistration
 - **New in 0.7** visualize single trials
 
 ----
@@ -138,7 +140,7 @@ Statistics
 ----
 
 Connectivity Estimation
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
 
 - Sensor space and source space
 - Flexible configuration of seed-based or all-to-all connectivity
@@ -148,7 +150,7 @@ Connectivity Estimation
 ----
 
 ICA
-~~~~~~~~~~~~~~~~~~~
+~~~
 
 - Decompose raw and epochs MEG and EEG data
 - Extract and visualize sources
