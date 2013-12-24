@@ -227,8 +227,6 @@ PSD of Raw Data
 
 .. sourcecode:: python
 
-    from mne.time_frequency import compute_raw_psd
-
     raw = mne.fiff.Raw(raw_fname)
 
     raw.plot_psds(area_mode='range', tmax=10.0)
@@ -317,6 +315,7 @@ Handle Conditions Using Epochs
 .. sourcecode:: python
 
    import mne
+   from mne.viz import plot_topo
 
    ... # read raw data, set title
 
@@ -325,7 +324,6 @@ Handle Conditions Using Epochs
 
    evokeds = [epochs[name].average() for name in 'aud_l', 'vis_l']
    title = 'MNE sample data - left auditory and visual'
-
    plot_topo(evokeds, color=('yellow', 'green'), title=title)
 
 .. image:: images/plot_topo_conditions_example.png
